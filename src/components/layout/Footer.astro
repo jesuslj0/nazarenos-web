@@ -1,0 +1,81 @@
+---
+import { Image } from 'astro:assets';
+import { images } from '../../data/images';
+import { contact, nav, site, socials } from '../../data/site';
+---
+
+<footer class="mt-auto border-t border-gold-500/25 bg-ink-950">
+  <div class="container-page grid gap-12 py-16 lg:grid-cols-12 lg:gap-8">
+    <div class="lg:col-span-5">
+      <div class="flex items-center gap-5">
+        <Image
+          src={images.escudoAgrupacion}
+          alt="Escudo de la Agrupación Musical Nuestro Padre Jesús Nazareno: monograma HJN dorado con corona y corona de espinas sobre fondo morado."
+          width={160}
+          class="h-24 w-auto"
+        />
+        <div>
+          <p class="font-display text-2xl leading-tight">{site.name}</p>
+          <p class="mt-1 text-sm uppercase tracking-[0.2em] text-gold-500">
+            El Bonillo · Desde {site.founded}
+          </p>
+        </div>
+      </div>
+      <p class="mt-6 max-w-md text-sm text-ivory-muted">
+        Sede canónica: {site.canonicalSeat}, {site.locality}.
+      </p>
+    </div>
+
+    <nav aria-label="Pie de página" class="lg:col-span-3 lg:col-start-7">
+      <h2 class="eyebrow mb-5 font-sans">Navegación</h2>
+      <ul class="space-y-2.5">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="text-ivory-muted transition-colors hover:text-gold-300">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="lg:col-span-3">
+      <h2 class="eyebrow mb-5 font-sans">Síguenos</h2>
+      <ul class="space-y-2.5">
+        {
+          socials.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-ivory-muted transition-colors hover:text-gold-300"
+              >
+                {s.network}
+                <span class="sr-only">: {s.handle} (se abre en una pestaña nueva)</span>
+                <span aria-hidden="true" class="ml-1 text-gold-500">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      {
+        contact.email && (
+          <p class="mt-6 text-sm">
+            <a class="link-quiet" href={`mailto:${contact.email}`}>
+              {contact.email}
+            </a>
+          </p>
+        )
+      }
+    </div>
+  </div>
+
+  <div class="border-t border-gold-500/15">
+    <p class="container-page py-6 text-xs tracking-wide text-ivory-muted/80">
+      © {new Date().getFullYear()} {site.name}. {site.agrupacion.name}.
+    </p>
+  </div>
+</footer>

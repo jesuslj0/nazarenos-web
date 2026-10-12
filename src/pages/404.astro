@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ButtonLink from '../components/ui/ButtonLink.astro';
+---
+
+<BaseLayout title="Página no encontrada" description="La página que buscas no existe.">
+  <section class="section">
+    <div class="container-prose py-12 text-center">
+      <p class="eyebrow justify-center">Error 404</p>
+      <h1 class="display-title mt-6">Página no <span class="gold-text">encontrada</span></h1>
+      <p class="lede mt-6">La dirección que buscas no existe o ha cambiado de sitio.</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-4">
+        <ButtonLink href="/">Volver al inicio</ButtonLink>
+        <ButtonLink href="/actualidad/" variant="outline">Ver actualidad</ButtonLink>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

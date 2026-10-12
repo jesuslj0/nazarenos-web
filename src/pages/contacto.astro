@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ButtonLink from '../components/ui/ButtonLink.astro';
+import { contact, site, socials } from '../data/site';
+
+const datos = [
+  { label: 'Correo electrónico', value: contact.email, href: contact.email ? `mailto:${contact.email}` : null },
+  { label: 'Teléfono', value: contact.phone, href: contact.phone ? `tel:${contact.phone.replace(/\s/g, '')}` : null },
+  { label: 'Dirección postal', value: contact.postalAddress, href: null },
+];
+---
+
+<BaseLayout
+  title="Contacto"
+  description="Contacta con la Hermandad de Nuestro Padre Jesús Nazareno y con su agrupación musical en El Bonillo, Albacete."
+>
+  <PageHero eyebrow="Contacto">
+    Ponte en <span class="gold-text">contacto</span>
+    <Fragment slot="lede">
+      Para hermanos, devotos, músicos y quienes deseen contar con la agrupación.
+    </Fragment>
+  </PageHero>
+
+  <section class="section" aria-labelledby="datos">
+    <div class="container-page grid gap-16 lg:grid-cols-12 lg:gap-20">
+      <div class="lg:col-span-6">
+        <SectionHeading eyebrow="Información de contacto">
+          <span id="datos">Cómo <span class="gold-text">localizarnos</span></span>
+        </SectionHeading>
+        <dl class="mt-10 divide-y divide-gold-500/25 border-y border-gold-500/25">
+          {
+            datos.map((d) => (
+              <div class="py-5">
+                <dt class="text-xs font-semibold uppercase tracking-[0.18em] text-gold-500">{d.label}</dt>
+                <dd class="mt-1.5 text-lg">
+                  {d.value ? (
+                    d.href ? (
+                      <a class="link-quiet" href={d.href}>{d.value}</a>
+                    ) : (
+                      d.value
+                    )
+                  ) : (
+                    <span class="pending">[Pendiente]</span>
+                  )}
+                </dd>
+              </div>
+            ))
+          }
+          <div class="py-5">
+            <dt class="text-xs font-semibold uppercase tracking-[0.18em] text-gold-500">Localidad</dt>
+            <dd class="mt-1.5 text-lg">{site.locality}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="lg:col-span-6">
+        <SectionHeading eyebrow="Redes sociales">
+          <span id="redes">Escríbenos por <span class="gold-text">redes</span></span>
+        </SectionHeading>
+        <ul class="mt-10 border-b border-gold-500/25">
+          {
+            socials.map((s) => (
+              <li class="border-t border-gold-500/25">
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group flex items-baseline justify-between gap-4 py-5"
+                >
+                  <span class="font-display text-3xl transition-colors group-hover:text-gold-300">{s.network}</span>
+                  <span class="text-right text-sm text-ivory-muted">
+                    {s.handle}
+                    <span class="sr-only">(se abre en una pestaña nueva)</span>
+                    <span aria-hidden="true" class="ml-2 text-gold-500">↗</span>
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section border-t border-gold-500/20 bg-ink-950" aria-labelledby="ubicacion">
+    <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-20">
+      <div class="lg:col-span-6">
+        <SectionHeading eyebrow="Ubicación">
+          <span id="ubicacion">Sede <span class="gold-text">canónica</span></span>
+        </SectionHeading>
+        <p class="lede mt-6">{site.canonicalSeat}, {site.locality}.</p>
+        <p class="prose-body mt-4"><span class="pending">[Pendiente: dirección postal y horarios de apertura]</span></p>
+      </div>
+      <div class="flex flex-col justify-end gap-8 lg:col-span-6">
+        <p class="prose-body">
+          Consulta cómo llegar a la parroquia en el mapa.
+        </p>
+        <div>
+          <ButtonLink href={contact.seatMapUrl} external>Abrir en el mapa</ButtonLink>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="contratacion">
+    <div class="container-prose text-center">
+      <p class="eyebrow justify-center">Agrupación musical</p>
+      <h2 id="contratacion" class="section-title mt-5">Contratación de la <span class="gold-text">agrupación</span></h2>
+      <p class="prose-body mt-6">
+        {
+          contact.contratacion ? (
+            contact.contratacion
+          ) : (
+            <span class="pending">[Pendiente: procedimiento y condiciones de contratación]</span>
+          )
+        }
+      </p>
+    </div>
+  </section>
+</BaseLayout>

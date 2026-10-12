@@ -1,0 +1,184 @@
+---
+import { Image } from 'astro:assets';
+import Photo from '../components/ui/Photo.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Timeline from '../components/ui/Timeline.astro';
+import ButtonLink from '../components/ui/ButtonLink.astro';
+import { images } from '../data/images';
+import { hermandadHitos, hermandadResumen } from '../data/historia';
+import { contact, site } from '../data/site';
+import { titulares, titularesCierre, titularesIntro } from '../data/titulares';
+
+const datos = [
+  { label: 'Nombre', value: 'Nuestro Padre Jesús Nazareno' },
+  { label: 'Localidad', value: site.locality },
+  { label: 'Fundación', value: String(site.founded) },
+  { label: 'Sede canónica', value: site.canonicalSeat },
+  { label: 'Hermanos', value: 'Alrededor de 400' },
+];
+---
+
+<BaseLayout
+  title="La Hermandad"
+  description="Historia, titulares y patrimonio de la Hermandad de Nuestro Padre Jesús Nazareno de El Bonillo, fundada en 1782."
+  image={images.procesionNazareno}
+>
+  <PageHero
+    eyebrow="La hermandad"
+    image={images.procesionNazareno}
+    imageAlt="Procesión nocturna de Nuestro Padre Jesús Nazareno: el paso, iluminado por faroles, avanza entre nazarenos morados."
+    imagePosition="55% 15%"
+    imageWidths={[640, 1000]}
+  >
+    Una devoción desde <span class="gold-text">{site.founded}</span>
+    <Fragment slot="lede">
+      Presentación, historia y titulares de la Hermandad de Nuestro Padre Jesús Nazareno de El Bonillo.
+    </Fragment>
+  </PageHero>
+
+  <section class="section" aria-labelledby="presentacion">
+    <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-20">
+      <div class="lg:col-span-7">
+        <SectionHeading eyebrow="Presentación">
+          <span id="presentacion">Una referencia de la Semana Santa <span class="gold-text">bonillera</span></span>
+        </SectionHeading>
+        <div class="prose-body mt-8 max-w-2xl">
+          {hermandadResumen.map((p) => <p>{p}</p>)}
+          <p>
+            Actualmente la hermandad está compuesta por alrededor de 400 hermanos. Su agrupación musical acompaña
+            a los titulares en la estación de penitencia.
+          </p>
+        </div>
+        <div class="mt-10">
+          <ButtonLink href="/agrupacion/" variant="outline">Conocer la agrupación musical</ButtonLink>
+        </div>
+      </div>
+
+      <aside class="lg:col-span-5" aria-label="Datos de interés">
+        <div class="border border-gold-500/35 bg-ink-950 p-8 sm:p-10">
+          <Image
+            src={images.escudoHermandad}
+            alt="Escudo de la hermandad: relieve en bronce de Jesús Nazareno con la cruz, dentro de la corona de espinas."
+            width={160}
+            height={160}
+            class="mx-auto size-32 rounded-full"
+          />
+          <h3 class="mt-8 text-center text-2xl">Datos de interés</h3>
+          <dl class="mt-6 divide-y divide-gold-500/20">
+            {
+              datos.map((d) => (
+                <div class="flex flex-col gap-0.5 py-3.5 sm:flex-row sm:justify-between sm:gap-6">
+                  <dt class="text-xs font-semibold uppercase tracking-[0.18em] text-gold-500">{d.label}</dt>
+                  <dd class="sm:text-right">{d.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section border-y border-gold-500/20 bg-ink-950" aria-labelledby="historia">
+    <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-20">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-28">
+          <SectionHeading eyebrow="Historia">
+            <span id="historia">Hitos de una <span class="gold-text">tradición</span></span>
+            <Fragment slot="intro">
+              Fechas principales de la hermandad según su reseña histórica.
+            </Fragment>
+          </SectionHeading>
+          <p class="mt-8 text-sm text-ivory-muted">
+            <span class="pending">[Pendiente: ampliar la historia con documentación de archivo]</span>
+          </p>
+        </div>
+      </div>
+      <div class="lg:col-span-8">
+        <Timeline items={hermandadHitos} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="titulares">
+    <div class="container-page">
+      <SectionHeading eyebrow="Titulares y patrimonio">
+        <span id="titulares">Nuestros <span class="gold-text">titulares</span></span>
+        <Fragment slot="intro">{titularesIntro}</Fragment>
+      </SectionHeading>
+
+      <div class="mt-20 space-y-24 lg:space-y-32">
+        {
+          titulares.map((t, i) => (
+            <article id={t.slug} class="grid scroll-mt-28 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+              <div
+                class:list={[
+                  'mx-auto w-full max-w-md lg:col-span-5 lg:max-w-none',
+                  i % 2 === 1 && 'lg:order-2 lg:col-start-8',
+                ]}
+              >
+                <div class="aspect-[3/4] overflow-hidden bg-ink-800 outline outline-1 outline-offset-[10px] outline-gold-500/35">
+                  <Photo
+                    src={t.image}
+                    alt={t.imageAlt}
+                    widths={[480, 720, 960]}
+                    sizes="(min-width: 1024px) 40vw, 28rem"
+                    class="size-full object-cover"
+                  />
+                </div>
+              </div>
+              <div class:list={['lg:col-span-6', i % 2 === 1 ? 'lg:order-1 lg:col-start-1' : 'lg:col-start-7']}>
+                <p class="eyebrow">{t.title}</p>
+                <h3 class="mt-5 text-4xl sm:text-5xl">{t.name}</h3>
+                <div class="prose-body mt-7">
+                  {t.paragraphs.map((p) => <p>{p}</p>)}
+                </div>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <blockquote class="mx-auto mt-24 max-w-3xl border-y border-gold-500/35 py-12 text-center lg:mt-32">
+        <p class="font-display text-2xl italic leading-snug text-ivory sm:text-3xl">{titularesCierre}</p>
+      </blockquote>
+
+      <div class="mx-auto mt-16 max-w-3xl">
+        <h3 class="text-3xl">Patrimonio</h3>
+        <div class="prose-body mt-5">
+          <p>
+            Además de los titulares, son también propiedad de la hermandad el paso de Jesús de Medinaceli (según acta
+            de 1957), el de Jesús Resucitado (adquirido en 1991) y el de La Piedad (adquirido en 1995). En 2014 se
+            incorporó una nueva imagen de Jesús Resucitado, tallada en madera con los mismos rasgos que la imagen
+            de Nuestro Padre Jesús Nazareno.
+          </p>
+          <p>
+            <span class="pending">[Pendiente: enseres, vestuario, tronos y demás patrimonio de la hermandad]</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section border-t border-gold-500/20 bg-ink-950" aria-labelledby="sede">
+    <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-20">
+      <div class="lg:col-span-6">
+        <SectionHeading eyebrow="Sede canónica">
+          <span id="sede">{site.canonicalSeat}</span>
+        </SectionHeading>
+        <p class="lede mt-6">{site.locality}</p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <ButtonLink href={contact.seatMapUrl} external>Ver en el mapa</ButtonLink>
+          <ButtonLink href="/contacto/" variant="outline">Contacto</ButtonLink>
+        </div>
+      </div>
+      <div class="prose-body lg:col-span-6">
+        <p>
+          <span class="pending">[Pendiente: horarios de culto, dirección postal y cultos principales de la hermandad]</span>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,68 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import NewsCard from '../../components/news/NewsCard.astro';
+import EventRow from '../../components/events/EventRow.astro';
+import { sortedNews, splitEvents } from '../../utils/collections';
+
+const allNews = sortedNews();
+const { upcoming, past } = splitEvents();
+---
+
+<BaseLayout
+  title="Actualidad y Eventos"
+  description="Noticias y agenda de eventos de la Hermandad de Nuestro Padre Jesús Nazareno y de su agrupación musical."
+>
+  <PageHero eyebrow="Actualidad y Eventos">
+    Lo que ocurre en la <span class="gold-text">hermandad</span>
+    <Fragment slot="lede">Noticias, cultos, actuaciones y citas de la agenda, en orden cronológico.</Fragment>
+  </PageHero>
+
+  <section class="section" aria-labelledby="noticias">
+    <div class="container-page">
+      <SectionHeading eyebrow="Noticias">
+        <span id="noticias">Últimas <span class="gold-text">noticias</span></span>
+      </SectionHeading>
+
+      <div class="mt-14 grid gap-x-14 gap-y-12 lg:grid-cols-2">
+        {allNews.map((item) => <NewsCard item={item} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="eventos" class="section scroll-mt-20 border-t border-gold-500/20 bg-ink-950" aria-labelledby="eventos-titulo">
+    <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-28">
+          <SectionHeading eyebrow="Agenda">
+            <span id="eventos-titulo">Eventos <span class="gold-text">próximos</span> y pasados</span>
+          </SectionHeading>
+        </div>
+      </div>
+
+      <div class="space-y-16 lg:col-span-8">
+        <div>
+          <h3 class="mb-2 text-3xl">Próximos</h3>
+          {
+            upcoming.length > 0 ? (
+              upcoming.map((event) => <EventRow event={event} />)
+            ) : (
+              <p class="border-t border-gold-500/35 pt-7 text-ivory-muted">
+                No hay eventos programados por el momento.
+              </p>
+            )
+          }
+        </div>
+        {
+          past.length > 0 && (
+            <div>
+              <h3 class="mb-2 text-3xl text-ivory-muted">Finalizados</h3>
+              {past.map((event) => <EventRow event={event} past />)}
+            </div>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

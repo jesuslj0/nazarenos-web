@@ -1,0 +1,55 @@
+---
+import type { EventItem } from '../../data/events';
+import { dateParts, formatDate } from '../../utils/dates';
+import PendingText from '../ui/PendingText.astro';
+
+interface Props {
+  event: EventItem;
+  past?: boolean;
+}
+
+const { event, past = false } = Astro.props;
+const parts = event.date ? dateParts(event.date) : null;
+---
+
+<article
+  class:list={[
+    'grid grid-cols-[4.5rem_1fr] gap-5 border-t py-7 sm:grid-cols-[6.5rem_1fr] sm:gap-8',
+    past ? 'border-ivory/10' : 'border-gold-500/35',
+  ]}
+>
+  <div class:list={['text-center', past ? 'text-violet-300/70' : 'text-gold-500']}>
+    {
+      parts ? (
+        <>
+          <p class="font-display text-5xl leading-none sm:text-6xl">{parts.day}</p>
+          <p class="mt-1 text-xs font-semibold uppercase tracking-[0.2em]">{parts.month}</p>
+          <p class="text-xs tracking-[0.2em] opacity-80">{parts.year}</p>
+        </>
+      ) : (
+        <p class="font-display text-xl italic leading-tight sm:text-2xl">Fecha por confirmar</p>
+      )
+    }
+  </div>
+  <div class={past ? 'opacity-75' : ''}>
+    <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-[0.2em]">
+      {
+        past ? (
+          <span class="text-violet-300">Finalizado</span>
+        ) : (
+          <span class="inline-flex items-center gap-2 text-gold-300">
+            <span class="size-1.5 rotate-45 bg-gold-500" aria-hidden="true" />
+            Próximo
+          </span>
+        )
+      }
+      {event.provisional && <span class="pending normal-case tracking-normal">Evento de ejemplo</span>}
+    </p>
+    <h3 class="mt-2 text-2xl sm:text-3xl">{event.title}</h3>
+    {event.date && <p class="sr-only"><time datetime={event.date}>{formatDate(event.date)}</time></p>}
+    <p class="mt-2 text-sm text-ivory-muted">
+      <span class="font-semibold text-ivory">Lugar:</span> <PendingText text={event.place} />
+    </p>
+    <p class="mt-3 max-w-2xl text-ivory-muted"><PendingText text={event.description} /></p>
+  </div>
+</article>

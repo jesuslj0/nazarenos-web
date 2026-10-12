@@ -1,0 +1,76 @@
+---
+import Photo from '../../components/ui/Photo.astro';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PendingText from '../../components/ui/PendingText.astro';
+import NewsCard from '../../components/news/NewsCard.astro';
+import { news, type NewsItem } from '../../data/news';
+import { sortedNews } from '../../utils/collections';
+import { formatDate } from '../../utils/dates';
+
+export const getStaticPaths = (() =>
+  news.map((item) => ({ params: { slug: item.slug }, props: { item } }))) satisfies GetStaticPaths;
+
+const { item } = Astro.props as { item: NewsItem };
+const related = sortedNews()
+  .filter((n) => n.slug !== item.slug)
+  .slice(0, 2);
+---
+
+<BaseLayout
+  title={item.title}
+  description={item.summary}
+  image={item.image}
+  type="article"
+  publishedTime={item.date}
+>
+  <article>
+    <header class="border-b border-gold-500/25 bg-ink-950">
+      <div class="container-prose py-16 sm:py-24">
+        <a href="/actualidad/" class="link-quiet block w-fit text-sm font-semibold uppercase tracking-[0.16em]">← Actualidad</a>
+        <p class="eyebrow mt-10">
+          <time datetime={item.date}>{formatDate(item.date)}</time>
+        </p>
+        <h1 class="mt-6 text-4xl sm:text-5xl lg:text-6xl">{item.title}</h1>
+        {
+          item.provisional && (
+            <p class="mt-6"><span class="pending">Contenido de ejemplo: sustituir por información real</span></p>
+          )
+        }
+        <p class="lede mt-8">{item.summary}</p>
+      </div>
+    </header>
+
+    {
+      item.image && (
+        <figure class="container-page -mt-px max-w-5xl pt-12 sm:pt-16">
+          <Photo
+            src={item.image}
+            alt={item.imageAlt ?? ''}
+            widths={[640, 960, 1280, 1600]}
+            sizes="(min-width: 1024px) 64rem, 100vw"
+            loading="eager"
+            class="aspect-[16/10] w-full object-cover"
+          />
+        </figure>
+      )
+    }
+
+    <div class="container-prose prose-body py-14 sm:py-20">
+      {item.body.map((p) => <p><PendingText text={p} /></p>)}
+    </div>
+  </article>
+
+  {
+    related.length > 0 && (
+      <section class="section border-t border-gold-500/20 bg-ink-950" aria-labelledby="mas-noticias">
+        <div class="container-page">
+          <h2 id="mas-noticias" class="section-title">Más <span class="gold-text">noticias</span></h2>
+          <div class="mt-12 grid gap-x-14 gap-y-12 lg:grid-cols-2">
+            {related.map((n) => <NewsCard item={n} />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</BaseLayout>

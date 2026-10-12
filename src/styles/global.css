@@ -1,0 +1,257 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/cormorant-garamond/wght.css';
+@import '@fontsource-variable/cormorant-garamond/wght-italic.css';
+@import '@fontsource-variable/source-sans-3/wght.css';
+
+/*
+ * Tokens de diseño. Morado y dorado extraídos de escudo-agrupacion.jpeg
+ * (morado ≈ #4a0e72, dorado ≈ #e0b03a). Fondo: morado muy oscuro.
+ */
+@theme {
+  --color-ink-950: #0d0215;
+  --color-ink-900: #160426;
+  --color-ink-800: #20093a;
+  --color-ink-700: #2d1050;
+  --color-ink-600: #3d1a66;
+
+  --color-violet-600: #4a0e72;
+  --color-violet-500: #6a1fa0;
+  --color-violet-300: #c3a6e0;
+  --color-violet-200: #dccbef;
+
+  --color-gold-300: #f0d27c;
+  --color-gold-500: #e0b03a;
+  --color-gold-700: #a9812a;
+
+  --color-ivory: #fbf8fd;
+  --color-ivory-muted: #cdbfdf;
+
+  --font-display: 'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif;
+
+  --breakpoint-xs: 30rem;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-ink-900);
+    color: var(--color-ivory);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    text-rendering: optimizeLegibility;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-300);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .container-page {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .container-page {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .container-prose {
+    width: 100%;
+    max-width: 44rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 48rem) {
+    .container-prose {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .section {
+    padding-block: 4.5rem;
+  }
+
+  @media (min-width: 64rem) {
+    .section {
+      padding-block: 7rem;
+    }
+  }
+
+  /* Etiqueta superior con filete dorado */
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-gold-500);
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 2.25rem;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .display-title {
+    font-size: clamp(2.5rem, 6.5vw, 4.75rem);
+    font-weight: 500;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 4.2vw, 3.25rem);
+  }
+
+  .lede {
+    font-size: clamp(1.125rem, 1.6vw, 1.3rem);
+    line-height: 1.65;
+    color: var(--color-ivory-muted);
+  }
+
+  .prose-body > * + * {
+    margin-top: 1.25em;
+  }
+
+  .prose-body {
+    color: var(--color-ivory-muted);
+  }
+
+  .prose-body strong {
+    color: var(--color-ivory);
+    font-weight: 600;
+  }
+
+  .gold-text {
+    color: var(--color-gold-500);
+    font-style: italic;
+  }
+
+  /* Filete dorado fino, usado como separador editorial */
+  .rule-gold {
+    height: 1px;
+    border: 0;
+    background: linear-gradient(to right, var(--color-gold-500), transparent);
+    opacity: 0.55;
+  }
+
+  .link-quiet {
+    color: var(--color-ivory);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-gold-500) 55%, transparent);
+    text-underline-offset: 0.28em;
+    transition: text-decoration-color 0.2s, color 0.2s;
+  }
+
+  .link-quiet:hover {
+    color: var(--color-gold-300);
+    text-decoration-color: var(--color-gold-300);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.95rem 1.75rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    line-height: 1;
+    border: 1px solid var(--color-gold-500);
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      border-color 0.25s;
+  }
+
+  .btn-primary {
+    background: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-gold-300);
+    border-color: var(--color-gold-300);
+  }
+
+  .btn-outline {
+    color: var(--color-gold-300);
+  }
+
+  .btn-outline:hover {
+    background: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+
+  /* Marcador para contenido que falta */
+  .pending {
+    display: inline;
+    padding: 0.05em 0.5em;
+    border: 1px dashed color-mix(in srgb, var(--color-gold-500) 70%, transparent);
+    background: color-mix(in srgb, var(--color-gold-500) 9%, transparent);
+    color: var(--color-gold-300);
+    font-size: 0.92em;
+    font-style: normal;
+  }
+}

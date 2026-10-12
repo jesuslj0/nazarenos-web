@@ -1,0 +1,47 @@
+---
+import Photo from './Photo.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  eyebrow: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+  imagePosition?: string;
+  imageWidths?: number[];
+}
+
+const { eyebrow, image, imageAlt = '', imagePosition = 'center', imageWidths } = Astro.props;
+---
+
+<section class="relative isolate overflow-hidden border-b border-gold-500/25 bg-ink-950">
+  {
+    image && (
+      <>
+        <div class="absolute inset-0 -z-10 lg:left-[48%] lg:[mask-image:linear-gradient(to_right,transparent,black_40%)]">
+          <Photo
+            src={image}
+            alt={imageAlt}
+            widths={imageWidths ?? [800, 1280, 1920]}
+            sizes="(min-width: 1024px) 62vw, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            class="size-full object-cover"
+            style={`object-position: ${imagePosition}`}
+          />
+        </div>
+        <div class="absolute inset-0 -z-10 bg-ink-950/70 lg:bg-ink-950/10" aria-hidden="true" />
+      </>
+    )
+  }
+  <div class="container-page py-20 sm:py-28 lg:py-36">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class:list={['display-title mt-6', image ? 'max-w-2xl' : 'max-w-3xl']}><slot /></h1>
+    {
+      Astro.slots.has('lede') && (
+        <p class="lede mt-8 max-w-xl">
+          <slot name="lede" />
+        </p>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,129 @@
+---
+import { Image } from 'astro:assets';
+import { images } from '../../data/images';
+import { nav } from '../../data/site';
+
+const current = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? current === '/' : current.startsWith(href));
+---
+
+<header class="sticky top-0 z-50 border-b border-gold-500/25 bg-ink-950/92 backdrop-blur-md">
+  <div class="container-page flex h-[4.5rem] items-center justify-between gap-6">
+    <a href="/" class="flex items-center gap-3" aria-label="Hermandad de Nuestro Padre Jesús Nazareno, inicio">
+      <Image
+        src={images.escudoHermandad}
+        alt=""
+        width={96}
+        height={96}
+        class="size-11 shrink-0 rounded-full"
+        loading="eager"
+      />
+      <span class="flex flex-col leading-none">
+        <span class="mb-1 text-[0.6rem] font-semibold uppercase tracking-[0.28em] text-gold-500">
+          Hermandad de
+        </span>
+        <span class="font-display text-[1.15rem] font-medium sm:text-[1.4rem]">
+          Nuestro Padre Jesús Nazareno
+        </span>
+      </span>
+    </a>
+
+    <nav aria-label="Principal" class="hidden lg:block">
+      <ul class="flex items-center gap-8">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'relative py-2 text-[0.8rem] font-semibold uppercase tracking-[0.16em] transition-colors',
+                  "after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-left after:scale-x-0 after:bg-gold-500 after:transition-transform after:content-['']",
+                  'hover:text-gold-300 hover:after:scale-x-100',
+                  isActive(item.href) ? 'text-gold-300 after:scale-x-100' : 'text-ivory',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <button
+      type="button"
+      id="menu-toggle"
+      class="-mr-2 inline-flex size-11 items-center justify-center text-ivory lg:hidden"
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      aria-label="Abrir menú"
+    >
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path class="menu-open" d="M3 7h18M3 12h18M3 17h18" stroke-linecap="round"></path>
+        <path class="menu-close" d="M5 5l14 14M19 5L5 19" stroke-linecap="round"></path>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<!-- Fuera del header: backdrop-blur crearía un bloque contenedor y rompería position: fixed. -->
+<nav
+  id="mobile-menu"
+  aria-label="Principal (móvil)"
+  hidden
+  class="fixed inset-x-0 bottom-0 top-[4.5rem] z-40 overflow-y-auto bg-ink-950 lg:hidden"
+>
+  <ul class="container-page flex flex-col py-6">
+    {
+      nav.map((item) => (
+        <li class="border-b border-gold-500/20">
+          <a
+            href={item.href}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+            class:list={[
+              'flex items-baseline justify-between py-5 font-display text-3xl transition-colors hover:text-gold-300',
+              isActive(item.href) ? 'text-gold-300' : 'text-ivory',
+            ]}
+          >
+            {item.label}
+            <span aria-hidden="true" class="text-base text-gold-500">→</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  #menu-toggle[aria-expanded='false'] .menu-close,
+  #menu-toggle[aria-expanded='true'] .menu-open {
+    display: none;
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const desktop = window.matchMedia('(min-width: 64rem)');
+
+  function setOpen(open: boolean) {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    menu.hidden = !open;
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  }
+
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && toggle?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      toggle.focus();
+    }
+  });
+  desktop.addEventListener('change', (e) => e.matches && setOpen(false));
+</script>

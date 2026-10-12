@@ -1,0 +1,56 @@
+---
+import Photo from '../ui/Photo.astro';
+import type { NewsItem } from '../../data/news';
+import { formatDate } from '../../utils/dates';
+
+interface Props {
+  item: NewsItem;
+  variant?: 'featured' | 'row';
+}
+
+const { item, variant = 'row' } = Astro.props;
+const href = `/actualidad/${item.slug}/`;
+const featured = variant === 'featured';
+---
+
+<article
+  class:list={[
+    'group grid gap-6',
+    !featured && 'sm:grid-cols-[11rem_1fr] sm:gap-8',
+  ]}
+>
+  {
+    item.image && (
+      <a
+        href={href}
+        tabindex="-1"
+        aria-hidden="true"
+        class:list={[
+          'block overflow-hidden bg-ink-800',
+          featured ? 'aspect-[16/10]' : 'aspect-[4/3] sm:aspect-square',
+        ]}
+      >
+        <Photo
+          src={item.image}
+          alt=""
+          widths={featured ? [640, 960, 1280] : [320, 480]}
+          sizes={featured ? '(min-width: 1024px) 58vw, 100vw' : '(min-width: 640px) 11rem, 100vw'}
+          class="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+        />
+      </a>
+    )
+  }
+  <div class="flex flex-col justify-center">
+    <p class="flex flex-wrap items-center gap-x-3 text-xs font-semibold uppercase tracking-[0.2em] text-gold-500">
+      <time datetime={item.date}>{formatDate(item.date)}</time>
+      {item.provisional && <span class="pending not-italic tracking-normal normal-case">Contenido de ejemplo</span>}
+    </p>
+    <h3 class:list={['mt-3', featured ? 'text-3xl sm:text-4xl' : 'text-2xl']}>
+      <a href={href} class="transition-colors group-hover:text-gold-300">{item.title}</a>
+    </h3>
+    <p class="mt-3 text-ivory-muted">{item.summary}</p>
+    <p class="mt-4 text-sm font-semibold uppercase tracking-[0.16em] text-gold-300">
+      Leer más <span aria-hidden="true" class="inline-block transition-transform group-hover:translate-x-1">→</span>
+    </p>
+  </div>
+</article>

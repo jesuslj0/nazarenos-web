@@ -1,0 +1,13 @@
+---
+interface Props {
+  text: string;
+}
+
+/** Resalta los fragmentos «[Pendiente: …]» para que no pasen por contenido definitivo. */
+const segments = Astro.props.text
+  .split(/(\[Pendiente[^\]]*\])/g)
+  .filter(Boolean)
+  .map((value) => ({ value, pending: value.startsWith('[Pendiente') }));
+---
+
+{segments.map((s) => (s.pending ? <span class="pending">{s.value}</span> : s.value))}
