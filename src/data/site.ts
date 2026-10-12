@@ -8,7 +8,7 @@ export const site = {
     'Web institucional de la Hermandad de Nuestro Padre Jesús Nazareno y de su Agrupación Musical en El Bonillo, Albacete. Historia, titulares, actualidad y contacto.',
   agrupacion: {
     name: 'Agrupación Musical Nuestro Padre Jesús Nazareno',
-    shortName: 'AM Ntro. Jesús Nazareno',
+    shortName: 'AM Ntro. Padre Jesús Nazareno',
   },
 } as const;
 
@@ -46,8 +46,7 @@ export const socials: SocialLink[] = [
   {
     network: 'Facebook',
     handle: 'AM Ntro. Padre Jesús Nazareno El Bonillo',
-    // Solo se conoce el nombre de la página; sustituir por la URL directa cuando se disponga de ella.
-    href: 'https://www.facebook.com/search/pages?q=AM%20Ntro.%20Padre%20Jes%C3%BAs%20Nazareno%20El%20Bonillo',
+    href: 'https://www.facebook.com/p/AM-Ntro-Padre-Jes%C3%BAs-Nazareno-El-Bonillo-100063969043303/',
   },
 ];
 

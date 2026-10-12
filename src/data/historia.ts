@@ -109,10 +109,10 @@ export const repertorio: Obra[] = [
   { title: 'Callejuela de la O', composer: 'Paco Lola' },
   { title: 'Judería Sevillana', composer: 'Alejandro Blanco Hernández' },
   { title: 'Costaleros Gitanos', composer: 'Pedro Manuel Pacheco Palomo' },
-  { title: 'Estrella Renia del Cielo', composer: 'José Manuel Mena Hervás' },
+  { title: 'Estrella Reina del Cielo', composer: 'José Manuel Mena Hervás' },
   { title: '¡A la Gloria!', composer: 'Miguel Ángel Font' },
   { title: 'Señor de San Esteban', composer: 'Emilio Muñoz Serna' },
-  { title: 'Amor en tu mirada', composer: 'Juan Francisco Algarra Pérez' },
+  { title: 'Amor en tu Mirada', composer: 'Juan Francisco Algarra Pérez' },
   {
     title: 'Señor de San Román',
     composer: 'Emilio Muñoz Serna (re-armonizada posteriormente)',

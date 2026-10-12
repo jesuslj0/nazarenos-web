@@ -8,9 +8,10 @@ interface Props {
   imageAlt?: string;
   imagePosition?: string;
   imageWidths?: number[];
+  imageClass?: string;
 }
 
-const { eyebrow, image, imageAlt = '', imagePosition = 'center', imageWidths } = Astro.props;
+const { eyebrow, image, imageAlt = '', imagePosition = 'center', imageWidths, imageClass } = Astro.props;
 ---
 
 <section class="relative isolate overflow-hidden border-b border-gold-500/25 bg-ink-950">
@@ -25,7 +26,7 @@ const { eyebrow, image, imageAlt = '', imagePosition = 'center', imageWidths } =
             sizes="(min-width: 1024px) 62vw, 100vw"
             loading="eager"
             fetchpriority="high"
-            class="size-full object-cover"
+            class:list={['size-full object-cover', imageClass]}
             style={`object-position: ${imagePosition}`}
           />
         </div>
