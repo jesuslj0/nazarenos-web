@@ -34,6 +34,30 @@ export const gallery: GalleryItem[] = [
     group: 'hermandad',
   },
   {
+    image: images.fotoComidaCordero,
+    alt: 'Numerosos hermanos y familias posando juntos en el local de la hermandad, con dos tartas decoradas con fotografías de imágenes sobre la mesa.',
+    caption: 'Comida del cordero',
+    group: 'hermandad',
+  },
+  {
+    image: images.llegadaPlazaProcesion,
+    alt: 'El paso de Nuestro Padre Jesús Nazareno, visto de espaldas, avanza junto a la torre de la iglesia y el edificio del teatro bajo un cielo azul, entre portadores con túnica morada.',
+    caption: 'Llegada a la plaza Mayor en la procesión del Abrazo',
+    group: 'hermandad',
+  },
+  {
+    image: images.pasoDesdeAbajo,
+    alt: 'Nuestro Padre Jesús Nazareno con túnica morada bordada en oro y la cruz al hombro, visto desde abajo sobre su paso de claveles rojos y un farol dorado.',
+    caption: 'Nuestro Padre Jesús Nazareno sobre su paso',
+    group: 'hermandad',
+  },
+  {
+    image: images.procesionCalleMayor,
+    alt: 'El paso de Nuestro Padre Jesús Nazareno avanza por una calle a hombros de portadores con túnica morada y guantes blancos, con claveles rojos y faroles dorados.',
+    caption: 'Procesión por la calle Mayor',
+    group: 'hermandad',
+  },
+  {
     image: images.capillaGranPoder,
     alt: 'La agrupación musical al completo ante el retablo dorado del templo.',
     caption: 'La agrupación musical al completo',

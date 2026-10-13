@@ -1,7 +1,8 @@
 @import 'tailwindcss';
-@import '@fontsource-variable/cormorant-garamond/wght.css';
-@import '@fontsource-variable/cormorant-garamond/wght-italic.css';
-@import '@fontsource-variable/source-sans-3/wght.css';
+@import '@fontsource-variable/newsreader/wght.css';
+@import '@fontsource-variable/newsreader/wght-italic.css';
+@import '@fontsource-variable/instrument-sans/wght.css';
+@import '@fontsource/spectral/latin-400-italic.css';
 
 /*
  * Tokens de diseño. Morado y dorado extraídos de escudo-agrupacion.jpeg
@@ -29,8 +30,9 @@
   --color-ivory: #fbf8fd;
   --color-ivory-muted: #cdbfdf;
 
-  --font-display: 'Cormorant Garamond Variable', 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif;
+  --font-display: 'Newsreader Variable', 'Newsreader', Georgia, serif;
+  --font-accent: 'Spectral', Georgia, serif;
+  --font-sans: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
 
   --breakpoint-xs: 30rem;
 }
@@ -63,7 +65,7 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1.08;
     letter-spacing: -0.005em;
     text-wrap: balance;
@@ -157,12 +159,12 @@
   }
 
   .display-title {
-    font-size: clamp(2.5rem, 6.5vw, 4.75rem);
-    font-weight: 500;
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    font-weight: 400;
   }
 
   .section-title {
-    font-size: clamp(2rem, 4.2vw, 3.25rem);
+    font-size: clamp(1.75rem, 3.6vw, 2.75rem);
   }
 
   .lede {
@@ -186,6 +188,8 @@
 
   .gold-text {
     color: var(--color-gold-500);
+    font-family: var(--font-accent);
+    font-size: 1.06em;
     font-style: italic;
   }
 

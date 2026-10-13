@@ -2,6 +2,7 @@
 import Photo from '../components/ui/Photo.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
+import Icon from '../components/ui/Icon.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import NewsCard from '../components/news/NewsCard.astro';
 import EventRow from '../components/events/EventRow.astro';
@@ -16,7 +17,7 @@ const { upcoming } = splitEvents();
 
 <BaseLayout image={images.procesionNazareno}>
   <section class="relative isolate overflow-hidden bg-ink-950">
-    <div class="absolute inset-0 -z-10 opacity-90 lg:left-[28%] lg:[mask-image:linear-gradient(to_right,transparent,black_42%)]">
+    <div class="absolute inset-0 -z-10 opacity-90 lg:left-[28%] lg:translate-x-[100px] lg:[mask-image:linear-gradient(to_right,transparent,black_42%)]">
       <Photo
         src={images.procesionNazareno}
         alt="Procesión nocturna de Nuestro Padre Jesús Nazareno en una plaza de El Bonillo: el paso iluminado avanza entre nazarenos morados."
@@ -30,19 +31,23 @@ const { upcoming } = splitEvents();
     <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/75 via-40% to-ink-950/30 lg:via-ink-950/60 lg:to-transparent" aria-hidden="true"></div>
 
     <div class="container-page flex min-h-[calc(100svh-4.5rem)] flex-col justify-end pb-14 pt-40 sm:pb-20 lg:justify-center lg:pb-24 lg:pt-24">
-      <p class="eyebrow">El Bonillo · Albacete · Desde {site.founded}</p>
-      <h1 class="display-title mt-7 text-[clamp(2.9rem,8.5vw,6.5rem)] leading-[0.98]">
-        <span class="block text-[0.45em] font-normal tracking-wide text-ivory-muted">Hermandad de</span>
+      <p class="eyebrow">El Bonillo (Albacete) · Desde {site.founded}</p>
+      <h1 class="display-title mt-7 text-[clamp(2.5rem,7vw,5.5rem)] leading-[1.08]">
+        <span class="mb-[0.3em] block font-accent text-[0.42em] italic leading-none tracking-wide text-ivory-muted">
+          Hermandad de
+        </span>
         Nuestro Padre
-        <span class="gold-text block">Jesús Nazareno</span>
+        <span class="gold-text block w-fit bg-linear-to-r from-gold-500 from-20% via-gold-300 via-55% to-lilac-300 to-85% bg-clip-text pr-[0.1em] text-transparent">
+          Jesús Nazareno
+        </span>
       </h1>
       <p class="lede mt-8 max-w-lg">
         Una hermandad y una agrupación musical al servicio de la devoción de El Bonillo. Historia, tradición y
         música a los pies del Nazareno.
       </p>
       <div class="mt-10 flex flex-wrap gap-4">
-        <ButtonLink href="/hermandad/">Conocer la hermandad</ButtonLink>
-        <ButtonLink href="/agrupacion/" variant="outline">Agrupación musical</ButtonLink>
+        <ButtonLink href="/hermandad/"><Icon name="cross" />Conocer la hermandad</ButtonLink>
+        <ButtonLink href="/agrupacion/" variant="outline"><Icon name="trumpet" />Agrupación musical</ButtonLink>
       </div>
     </div>
   </section>
@@ -83,7 +88,7 @@ const { upcoming } = splitEvents();
         <p class="mt-3 text-xs text-ivory-muted/80">Cifras aproximadas según la reseña histórica de la hermandad.</p>
 
         <div class="mt-10">
-          <ButtonLink href="/hermandad/" variant="outline">Historia y titulares</ButtonLink>
+          <ButtonLink href="/hermandad/" variant="outline"><Icon name="book" />Historia y titulares</ButtonLink>
         </div>
       </div>
 
@@ -128,6 +133,7 @@ const { upcoming } = splitEvents();
                   <Photo
                     src={t.image}
                     alt={t.imageAlt}
+                    style={t.imagePosition ? `object-position: ${t.imagePosition}` : undefined}
                     widths={[360, 560, 800]}
                     sizes="(min-width: 640px) 30vw, 100vw"
                     class="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
@@ -164,8 +170,8 @@ const { upcoming } = splitEvents();
           cofrade, con unos 60 componentes y un repertorio de grandes marchas procesionales.
         </p>
         <div class="mt-10 flex flex-wrap gap-4">
-          <ButtonLink href="/agrupacion/">Conocer la agrupación</ButtonLink>
-          <ButtonLink href="/contacto/" variant="outline">Contratación</ButtonLink>
+          <ButtonLink href="/agrupacion/"><Icon name="trumpet" />Conocer la agrupación</ButtonLink>
+          <ButtonLink href="/contacto/" variant="outline"><Icon name="handshake" />Contratación</ButtonLink>
         </div>
       </div>
     </div>
@@ -202,7 +208,7 @@ const { upcoming } = splitEvents();
           <span id="eventos">Próximos <span class="gold-text">eventos</span></span>
         </SectionHeading>
         <div class="mt-8">
-          <ButtonLink href="/actualidad/#eventos" variant="outline">Ver agenda completa</ButtonLink>
+          <ButtonLink href="/actualidad/#eventos" variant="outline"><Icon name="calendar" />Ver agenda completa</ButtonLink>
         </div>
       </div>
       <div class="lg:col-span-8">

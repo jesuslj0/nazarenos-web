@@ -11,6 +11,19 @@ import { hermandadHitos, hermandadResumen } from '../data/historia';
 import { contact, site } from '../data/site';
 import { titulares, titularesCierre, titularesIntro } from '../data/titulares';
 
+const familia = [
+  {
+    image: images.costaleros,
+    alt: 'Foto de familia de los costaleros: hermanos con túnica morada de ribetes dorados y guantes blancos posan en el interior de la iglesia, ante el retablo dorado con la imagen de Jesús Resucitado.',
+    caption: 'Foto de familia de los costaleros',
+  },
+  {
+    image: images.fotoFamilia,
+    alt: 'Fotografía de grupo de la hermandad: decenas de personas con capas y túnicas moradas ante la puerta de madera de la iglesia, con tambores, trompetas y un banderín bordado en primer término.',
+    caption: 'Foto de familia de la hermandad',
+  },
+];
+
 const datos = [
   { label: 'Nombre', value: 'Nuestro Padre Jesús Nazareno' },
   { label: 'Localidad', value: site.locality },
@@ -123,6 +136,7 @@ const datos = [
                   <Photo
                     src={t.image}
                     alt={t.imageAlt}
+                    style={t.imagePosition ? `object-position: ${t.imagePosition}` : undefined}
                     widths={[480, 720, 960]}
                     sizes="(min-width: 1024px) 40vw, 28rem"
                     class="size-full object-cover"
@@ -142,7 +156,7 @@ const datos = [
       </div>
 
       <blockquote class="mx-auto mt-24 max-w-3xl border-y border-gold-500/35 py-12 text-center lg:mt-32">
-        <p class="font-display text-2xl italic leading-snug text-ivory sm:text-3xl">{titularesCierre}</p>
+        <p class="font-accent text-2xl italic leading-snug text-ivory sm:text-3xl">{titularesCierre}</p>
       </blockquote>
 
       <div class="mx-auto mt-16 max-w-3xl">
@@ -162,7 +176,32 @@ const datos = [
     </div>
   </section>
 
-  <section class="section border-t border-gold-500/20 bg-ink-950" aria-labelledby="sede">
+  <section class="section border-t border-gold-500/20 bg-ink-950" aria-labelledby="familia">
+    <div class="container-page">
+      <SectionHeading eyebrow="Hermanos">
+        <span id="familia">Una hermandad familiar y <span class="gold-text">unida</span></span>
+      </SectionHeading>
+
+      <div class="mt-14 grid gap-10 lg:grid-cols-2 lg:gap-8">
+        {
+          familia.map((f) => (
+            <figure>
+              <Photo
+                src={f.image}
+                alt={f.alt}
+                widths={[640, 960, 1280]}
+                sizes="(min-width: 1024px) 46vw, 100vw"
+                class="aspect-[16/9] w-full object-cover"
+              />
+              <figcaption class="mt-3 text-sm text-ivory-muted">{f.caption}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-ink-950" aria-labelledby="sede">
     <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-20">
       <div class="lg:col-span-6">
         <SectionHeading eyebrow="Sede canónica">

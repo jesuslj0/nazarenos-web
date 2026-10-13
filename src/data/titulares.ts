@@ -8,6 +8,8 @@ export interface Titular {
   paragraphs: string[];
   image: ImageMetadata;
   imageAlt: string;
+  /** Valor de `object-position` cuando el recorte por defecto no encuadra bien la imagen. */
+  imagePosition?: string;
 }
 
 export const titularesIntro =
@@ -37,9 +39,10 @@ export const titulares: Titular[] = [
       'Nuestra Señora de la Piedad contempla el dolor más profundo de una madre que sostiene en sus brazos el cuerpo sin vida de su Hijo.',
       'Esta advocación nos recuerda el amor incondicional, la fortaleza ante la adversidad y la esperanza que brota incluso en los momentos más difíciles. Bajo su mirada maternal, los hermanos encuentran consuelo, protección y ejemplo de fe.',
     ],
-    image: images.imagenPiedad,
+    image: images.imagenPiedad2,
     imageAlt:
-      'Grupo escultórico de la Piedad: la Virgen sostiene a Cristo yacente sobre un paso de madera tallada con flores amarillas y moradas.',
+      'Grupo escultórico de la Piedad: la Virgen, con el rostro afligido, sostiene a Cristo yacente ante una cruz cubierta con paños de encaje blanco.',
+    imagePosition: '10% 50%',
   },
   {
     slug: 'resucitado',
