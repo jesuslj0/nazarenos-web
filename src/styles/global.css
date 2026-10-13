@@ -19,6 +19,9 @@
   --color-violet-300: #c3a6e0;
   --color-violet-200: #dccbef;
 
+  --color-lilac-300: #b794f6;
+  --color-lilac-200: #d6c0ff;
+
   --color-gold-300: #f0d27c;
   --color-gold-500: #e0b03a;
   --color-gold-700: #a9812a;
@@ -236,11 +239,12 @@
   }
 
   .btn-outline {
-    color: var(--color-gold-300);
+    border-color: var(--color-lilac-300);
+    color: var(--color-lilac-200);
   }
 
   .btn-outline:hover {
-    background: var(--color-gold-500);
+    background: var(--color-lilac-300);
     color: var(--color-ink-950);
   }
 

@@ -6,7 +6,7 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import NewsCard from '../components/news/NewsCard.astro';
 import EventRow from '../components/events/EventRow.astro';
 import { images } from '../data/images';
-import { site, socials } from '../data/site';
+import { site } from '../data/site';
 import { titulares } from '../data/titulares';
 import { sortedNews, splitEvents } from '../utils/collections';
 
@@ -16,7 +16,7 @@ const { upcoming } = splitEvents();
 
 <BaseLayout image={images.procesionNazareno}>
   <section class="relative isolate overflow-hidden bg-ink-950">
-    <div class="absolute inset-0 -z-10 lg:left-[28%] lg:[mask-image:linear-gradient(to_right,transparent,black_42%)]">
+    <div class="absolute inset-0 -z-10 opacity-90 lg:left-[28%] lg:[mask-image:linear-gradient(to_right,transparent,black_42%)]">
       <Photo
         src={images.procesionNazareno}
         alt="Procesión nocturna de Nuestro Padre Jesús Nazareno en una plaza de El Bonillo: el paso iluminado avanza entre nazarenos morados."
@@ -27,7 +27,7 @@ const { upcoming } = splitEvents();
         class="size-full object-cover object-[55%_12%]"
       />
     </div>
-    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/55 to-ink-950/20 lg:bg-none" aria-hidden="true"></div>
+    <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/75 via-40% to-ink-950/30 lg:via-ink-950/60 lg:to-transparent" aria-hidden="true"></div>
 
     <div class="container-page flex min-h-[calc(100svh-4.5rem)] flex-col justify-end pb-14 pt-40 sm:pb-20 lg:justify-center lg:pb-24 lg:pt-24">
       <p class="eyebrow">El Bonillo · Albacete · Desde {site.founded}</p>
@@ -87,13 +87,22 @@ const { upcoming } = splitEvents();
         </div>
       </div>
 
-      <div class="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
+      <div class="relative mx-auto w-full max-w-sm pb-10 lg:col-span-5 lg:max-w-md lg:pb-12">
+        <div class="aspect-[4/5] [mask-image:radial-gradient(ellipse_closest-side,black_70%,transparent_100%)]">
+          <Photo
+            src={images.escudoAgrupacion}
+            alt="Escudo de la agrupación musical: monograma dorado con las iniciales H, J y N bajo una corona real, entrelazado con una corona de espinas y tres clavos, sobre fondo morado."
+            widths={[480, 720, 960]}
+            sizes="(min-width: 1024px) 28rem, 24rem"
+            class="size-full object-cover object-[50%_6%]"
+          />
+        </div>
         <Photo
           src={images.escudoHermandad}
           alt="Escudo de la hermandad: relieve en bronce de Jesús Nazareno abrazado a la cruz, rodeado por la corona de espinas."
-          widths={[400, 640, 800]}
-          sizes="(min-width: 1024px) 40vw, 24rem"
-          class="aspect-square w-full rounded-full object-cover shadow-[0_0_0_1px_rgb(224_176_58/0.45),0_0_0_12px_#160426,0_0_0_13px_rgb(224_176_58/0.25)]"
+          widths={[240, 400, 560]}
+          sizes="(min-width: 640px) 11rem, 9rem"
+          class="absolute bottom-0 -right-3 w-36 drop-shadow-[0_8px_18px_rgb(0_0_0/0.55)] sm:-right-10 sm:w-44"
         />
       </div>
     </div>
@@ -207,38 +216,6 @@ const { upcoming } = splitEvents();
           )
         }
       </div>
-    </div>
-  </section>
-
-  <section class="section" aria-labelledby="redes">
-    <div class="container-page">
-      <SectionHeading eyebrow="Redes sociales">
-        <span id="redes">Acompáñanos en <span class="gold-text">redes</span></span>
-        <Fragment slot="intro">Ensayos, actuaciones y novedades de la agrupación musical, a un paso.</Fragment>
-      </SectionHeading>
-      <ul class="mt-12 border-b border-gold-500/25">
-        {
-          socials.map((s) => (
-            <li class="border-t border-gold-500/25">
-              <a
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group flex flex-col gap-1 py-6 sm:flex-row sm:items-baseline sm:justify-between"
-              >
-                <span class="font-display text-4xl transition-colors group-hover:text-gold-300 sm:text-5xl">
-                  {s.network}
-                </span>
-                <span class="text-ivory-muted">
-                  {s.handle}
-                  <span class="sr-only">(se abre en una pestaña nueva)</span>
-                  <span aria-hidden="true" class="ml-2 inline-block text-gold-500 transition-transform group-hover:translate-x-1">↗</span>
-                </span>
-              </a>
-            </li>
-          ))
-        }
-      </ul>
     </div>
   </section>
 </BaseLayout>

@@ -52,7 +52,7 @@ export const socials: SocialLink[] = [
 
 /** Datos de contacto: `null` indica que el dato aún no se ha facilitado. */
 export const contact = {
-  email: null as string | null,
+  email: 'amj.nazarenoelbonillo@gmail.com',
   phone: null as string | null,
   postalAddress: null as string | null,
   contratacion: null as string | null,
