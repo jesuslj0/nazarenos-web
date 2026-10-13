@@ -103,19 +103,51 @@ export const agrupacionHitos: Hito[] = [
 export interface Obra {
   title: string;
   composer: string;
+  /** Nueva incorporación al repertorio de 2026. */
+  nueva?: boolean;
+  /** Marcha compuesta para la agrupación. */
+  propia?: boolean;
 }
 
+/** Repertorio 2026, en el orden de la relación oficial de la agrupación. */
 export const repertorio: Obra[] = [
-  { title: 'Callejuela de la O', composer: 'Paco Lola' },
-  { title: 'Judería Sevillana', composer: 'Alejandro Blanco Hernández' },
-  { title: 'Costaleros Gitanos', composer: 'Pedro Manuel Pacheco Palomo' },
-  { title: 'Estrella Reina del Cielo', composer: 'José Manuel Mena Hervás' },
-  { title: '¡A la Gloria!', composer: 'Miguel Ángel Font' },
-  { title: 'Señor de San Esteban', composer: 'Emilio Muñoz Serna' },
+  { title: '¡A la Gloria!', composer: 'Miguel Ángel Font Morgado' },
+  { title: 'A tus pies, mi Nazareno', composer: 'Emilio José Martínez Martínez', propia: true },
+  { title: 'Aires Albayzineros', composer: 'Felipe Trujillo Lira' },
   { title: 'Amor en tu Mirada', composer: 'Juan Francisco Algarra Pérez' },
-  {
-    title: 'Señor de San Román',
-    composer: 'Emilio Muñoz Serna (re-armonizada posteriormente)',
-  },
-  { title: 'Costaleros del amor', composer: 'Alejandro Moreno Rodríguez' },
+  { title: 'Ave María', composer: 'Vladimir Fyodorovich Vavilov' },
+  { title: 'Bajo tu Mirada', composer: 'Daniel Rodríguez Ramírez' },
+  { title: 'Callejuela de la O', composer: 'Francisco Joaquín Pérez Garrido' },
+  { title: 'Coronación de la Macarena', composer: 'Pedro Braña Martínez' },
+  { title: 'Costalero', composer: 'Ángel Jesús Sánchez Berenguer y José María Sánchez Berenguer' },
+  { title: 'Costaleros de Fe', composer: 'Javier Calvo Gaviño' },
+  { title: 'Costaleros del Amor', composer: 'Alejandro Moreno Rodríguez' },
+  { title: 'Costaleros Gitanos', composer: 'Pedro Manuel Pacheco Palomo' },
+  { title: 'Despierta, Sevilla…', composer: 'Francisco Javier Torres Simón', nueva: true },
+  { title: 'El Triunfo del Redentor', composer: 'Juan Francisco Algarra Pérez', nueva: true, propia: true },
+  { title: 'En la Cena del Señor', composer: 'José Manuel Mena Hervás' },
+  { title: 'En las Puertas del Cielo', composer: 'José Luis Rodríguez Navarro' },
+  { title: 'Entrando en Jerusalén', composer: 'José Manuel Mena Hervás' },
+  { title: 'Estrella Reina del Cielo', composer: 'José Manuel Mena Hervás' },
+  { title: 'Eterna Alianza', composer: 'Luis Fernández Ramos' },
+  { title: 'Himno Nacional', composer: 'Popular' },
+  { title: 'Judería Sevillana', composer: 'Alejandro Blanco Hernández' },
+  { title: 'La Espiga Dorada', composer: 'Emilio José Martínez Martínez', propia: true },
+  { title: 'Los Generales', composer: 'José Power Reta' },
+  { title: '¡Oh, Bendita Estrella!', composer: 'José Manuel Mena Hervás' },
+  { title: 'Oración', composer: 'José Manuel Mena Hervás' },
+  { title: 'Oración Redentora', composer: 'Alejandro Blanco Hernández' },
+  { title: 'Perdona a tu Pueblo', composer: 'Bernardo Velado Graña y Antonio Alcalde Fernández' },
+  { title: 'Pienso en Ti', composer: 'José Manuel Sánchez Crespillo', nueva: true },
+  { title: 'Por Siempre, Madre…', composer: 'Juan Pedro Melero Valdés' },
+  { title: 'Pureza', composer: 'Daniel Rodríguez Ramírez' },
+  { title: 'Redención', composer: 'Emilio Muñoz Serna' },
+  { title: 'Resurrectio', composer: 'Juan Francisco Algarra Pérez', nueva: true, propia: true },
+  { title: 'Sempiterno', composer: 'Alejandro Blanco Hernández' },
+  { title: 'Señor de San Esteban', composer: 'Emilio Muñoz Serna' },
+  { title: 'Señor de San Román', composer: 'Emilio Muñoz Serna (re-armonizada posteriormente)' },
+  { title: 'Sones en San Antón', composer: 'Jesús Ángel Gómez Escudero', propia: true },
+  { title: 'Todo por María', composer: 'José Manuel Sánchez Crespillo', nueva: true },
+  { title: 'Toques de la Calzá', composer: 'Francisco David Álvarez Barroso' },
+  { title: 'Volver a Verte', composer: 'Raúl Delgado Perera' },
 ];
