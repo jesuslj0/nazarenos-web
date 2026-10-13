@@ -22,10 +22,10 @@ export const actuaciones: Actuacion[] = [
         class: 'brightness-[1.3]',
       },
     ],
-    title: 'Acto conjunto con la A. M. Nuestro Padre Jesús Nazareno de Campo de Criptana',
+    title: 'Concierto de Santa Cecilia',
     place: 'Teatro Cervantes, Campo de Criptana (Ciudad Real)',
     when: '15 de noviembre de 2025',
-    details: [],
+    details: ['Acto conjunto con la A. M. Nuestro Padre Jesús Nazareno de Campo de Criptana.'],
   },
   {
     photos: [
@@ -49,7 +49,7 @@ export const actuaciones: Actuacion[] = [
         alt: 'La agrupación con uniforme morado y cordones dorados interpretando al aire libre sobre un escenario, con trompetas, bombardinos y cajas, bajo los árboles de una plaza.',
       },
     ],
-    title: 'Concierto en Valencia',
+    title: 'X Certamen de Música de Cornetas y Tambores',
     place: 'Barrio del Cabañal, Valencia',
     when: 'Octubre de 2022',
     details: [],

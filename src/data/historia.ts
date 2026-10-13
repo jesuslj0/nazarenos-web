@@ -94,9 +94,49 @@ export const agrupacionHitos: Hito[] = [
     text: 'Participa en la grabación de «Sones de Música Cofrade – Semana Santa El Bonillo», editado por el Excmo. Ayuntamiento de El Bonillo.',
   },
   {
+    when: 'Marzo de 2018',
+    title: 'VI Certamen de Bandas «Beas Cofrade»',
+    text: 'Actúa en Beas de Segura (Jaén), en el VI Certamen de Bandas «Beas Cofrade».',
+  },
+  {
+    when: 'Marzo de 2018',
+    title: 'Concierto de Marchas Procesionales',
+    text: 'Participa en El Bonillo en un Concierto de Marchas Procesionales junto a la A. M. «Cruz Roja» de Tobarra.',
+  },
+  {
+    when: 'Noviembre de 2018',
+    title: 'III Certamen de Música Cofrade',
+    text: 'Participa en el III Certamen de Música Cofrade celebrado en Albacete.',
+  },
+  {
+    when: 'Marzo de 2019',
+    title: 'VII Certamen de Bandas «Beas Cofrade»',
+    text: 'Actúa en Beas de Segura (Jaén), en el VII Certamen de Bandas «Beas Cofrade».',
+  },
+  {
+    when: 'Octubre de 2019',
+    title: 'Certamen de Bandas «Fe y Esperanza»',
+    text: 'Viaja a Málaga para participar en el Certamen de Bandas «Fe y Esperanza», llevando su música cofrade más allá de Castilla-La Mancha.',
+  },
+  {
+    when: 'Diciembre de 2019',
+    title: 'Feria Cofrade «Capricho Cofrade»',
+    text: 'Participa en la Feria Cofrade «Capricho Cofrade» de Granada.',
+  },
+  {
+    when: 'Octubre de 2022',
+    title: 'X Certamen de Música de Cornetas y Tambores',
+    text: 'Participa en Valencia, en el barrio del Cabañal, en el X Certamen de Música de Cornetas y Tambores.',
+  },
+  {
     when: '10 de marzo de 2023',
     title: 'Presentación de nuevos uniformes',
     text: 'Presentación de los nuevos uniformes de la agrupación.',
+  },
+  {
+    when: '7 de febrero de 2026',
+    title: 'Actuación en la parroquia de San Lorenzo',
+    text: 'Actúa en la parroquia de San Lorenzo, en Sevilla.',
   },
 ];
 
