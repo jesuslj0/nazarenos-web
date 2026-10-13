@@ -85,8 +85,8 @@ export const agrupacionHitos: Hito[] = [
   },
   {
     when: '2012',
-    title: 'Primer disco',
-    text: 'Se propone uno de sus mayores retos: la grabación de un disco compacto con varias de las obras de su repertorio.',
+    title: 'Primer disco: «A tus pies, mi Nazareno»',
+    text: 'Afronta uno de sus mayores retos y graba su primer disco compacto, que lleva por título el de su marcha más emblemática, «A tus pies, mi Nazareno». Junto a ella reúne obras como «Judería Sevillana», «¡Oh, bendita estrella!», «¡A la Gloria!» o «Costaleros del Amor», entre otras: el sonido de la agrupación a los pies de su Titular.',
   },
   {
     when: '2015',

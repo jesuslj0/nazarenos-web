@@ -50,6 +50,8 @@ export const actuaciones: Actuacion[] = [
       },
     ],
     title: 'Concierto en Valencia',
+    place: 'Barrio del Cabañal, Valencia',
+    when: 'Octubre de 2022',
     details: [],
   },
 ];

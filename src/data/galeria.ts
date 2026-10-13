@@ -109,8 +109,8 @@ export const archivo: ArchivoItem[] = [
   },
   {
     when: '2012',
-    title: 'Disco compacto de la agrupación',
-    description: 'Primera grabación de la agrupación con varias de las obras que interpreta.',
+    title: 'Disco compacto «A tus pies, mi Nazareno»',
+    description: 'Primera grabación de la agrupación, con la marcha que le da nombre y otras como «Judería Sevillana», «¡Oh, bendita estrella!», «¡A la Gloria!» y «Costaleros del Amor».',
   },
   {
     when: '2015',
