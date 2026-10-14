@@ -6,6 +6,7 @@ import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import Timeline from '../components/ui/Timeline.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
+import Icon from '../components/ui/Icon.astro';
 import { images } from '../data/images';
 import { hermandadHitos, hermandadResumen } from '../data/historia';
 import { contact, site } from '../data/site';
@@ -45,7 +46,7 @@ const datos = [
     imagePosition="55% 15%"
     imageWidths={[640, 1000]}
   >
-    Una devoción desde <span class="gold-text">{site.founded}</span>
+    Una devoción desde <span class="gold-text bg-linear-to-r from-gold-500 from-20% via-gold-300 via-55% to-lilac-300 to-85% bg-clip-text pr-[0.1em] text-transparent">{site.founded}</span>
     <Fragment slot="lede">
       Presentación, historia y titulares de la Hermandad de Nuestro Padre Jesús Nazareno de El Bonillo.
     </Fragment>
@@ -65,7 +66,7 @@ const datos = [
           </p>
         </div>
         <div class="mt-10">
-          <ButtonLink href="/agrupacion/" variant="outline">Conocer la agrupación musical</ButtonLink>
+          <ButtonLink href="/agrupacion/" variant="outline"><Icon name="trumpet" />Conocer la agrupación musical</ButtonLink>
         </div>
       </div>
 
@@ -209,8 +210,8 @@ const datos = [
         </SectionHeading>
         <p class="lede mt-6">{site.locality}</p>
         <div class="mt-10 flex flex-wrap gap-4">
-          <ButtonLink href={contact.seatMapUrl} external>Ver en el mapa</ButtonLink>
-          <ButtonLink href="/contacto/" variant="outline">Contacto</ButtonLink>
+          <ButtonLink href={contact.seatMapUrl} external><Icon name="mapPin" />Ver en el mapa</ButtonLink>
+          <ButtonLink href="/contacto/" variant="outline"><Icon name="mail" />Contacto</ButtonLink>
         </div>
       </div>
       <div class="prose-body lg:col-span-6">

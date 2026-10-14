@@ -1,5 +1,5 @@
 ---
-import Photo from '../components/ui/Photo.astro';
+import GalleryGrid from '../components/gallery/GalleryGrid.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
@@ -28,29 +28,7 @@ import { images } from '../data/images';
         </Fragment>
       </SectionHeading>
 
-      <ul class="mt-14 columns-1 gap-6 sm:columns-2 lg:columns-3">
-        {
-          gallery.map((item) => (
-            <li class="mb-6 break-inside-avoid">
-              <figure class="group">
-                <div class="overflow-hidden bg-ink-800">
-                  <Photo
-                    src={item.image}
-                    alt={item.alt}
-                    widths={[480, 720, 1080]}
-                    sizes="(min-width: 1024px) 31vw, (min-width: 640px) 48vw, 100vw"
-                    class="h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                  />
-                </div>
-                <figcaption class="mt-3 flex items-baseline gap-3 text-sm text-ivory-muted">
-                  <span class="size-1.5 shrink-0 translate-y-[-0.1em] rotate-45 bg-gold-500" aria-hidden="true" />
-                  {item.caption}
-                </figcaption>
-              </figure>
-            </li>
-          ))
-        }
-      </ul>
+      <GalleryGrid items={gallery} />
     </div>
   </section>
 

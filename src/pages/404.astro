@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
+import Icon from '../components/ui/Icon.astro';
 ---
 
 <BaseLayout title="Página no encontrada" description="La página que buscas no existe.">
@@ -10,8 +11,8 @@ import ButtonLink from '../components/ui/ButtonLink.astro';
       <h1 class="display-title mt-6">Página no <span class="gold-text">encontrada</span></h1>
       <p class="lede mt-6">La dirección que buscas no existe o ha cambiado de sitio.</p>
       <div class="mt-10 flex flex-wrap justify-center gap-4">
-        <ButtonLink href="/">Volver al inicio</ButtonLink>
-        <ButtonLink href="/actualidad/" variant="outline">Ver actualidad</ButtonLink>
+        <ButtonLink href="/"><Icon name="home" />Volver al inicio</ButtonLink>
+        <ButtonLink href="/actualidad/" variant="outline"><Icon name="article" />Ver actualidad</ButtonLink>
       </div>
     </div>
   </section>

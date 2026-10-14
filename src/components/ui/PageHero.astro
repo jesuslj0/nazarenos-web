@@ -9,16 +9,21 @@ interface Props {
   imagePosition?: string;
   imageWidths?: number[];
   imageClass?: string;
+  /** Inicio de la imagen en escritorio. */
+  imageLeft?: string;
 }
 
-const { eyebrow, image, imageAlt = '', imagePosition = 'center', imageWidths, imageClass } = Astro.props;
+const { eyebrow, image, imageAlt = '', imagePosition = 'center', imageWidths, imageClass, imageLeft = '48%' } = Astro.props;
 ---
 
 <section class="relative isolate overflow-hidden border-b border-gold-500/25 bg-ink-950">
   {
     image && (
       <>
-        <div class="absolute inset-0 -z-10 lg:left-[48%] lg:[mask-image:linear-gradient(to_right,transparent,black_40%)]">
+        <div
+          class="absolute inset-0 -z-10 lg:left-[var(--hero-left)] lg:[mask-image:linear-gradient(to_right,transparent,black_40%)]"
+          style={`--hero-left: ${imageLeft}`}
+        >
           <Photo
             src={image}
             alt={imageAlt}

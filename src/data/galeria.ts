@@ -60,7 +60,7 @@ export const gallery: GalleryItem[] = [
   {
     image: images.capillaGranPoder,
     alt: 'La agrupación musical al completo ante el retablo dorado del templo.',
-    caption: 'La agrupación musical al completo',
+    caption: 'La agrupación en la capilla del Gran Poder',
     group: 'agrupacion',
   },
   {

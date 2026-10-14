@@ -8,7 +8,7 @@ import Timeline from '../components/ui/Timeline.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
 import { actuaciones } from '../data/actuaciones';
 import { images } from '../data/images';
-import { agrupacionHitos, agrupacionResumen, repertorio } from '../data/historia';
+import { agrupacionHistoriaAnterior, agrupacionHitos, agrupacionResumen, repertorio } from '../data/historia';
 import { contact, site } from '../data/site';
 
 const [campoCriptana, torredonjimeno, valencia] = actuaciones;
@@ -24,10 +24,10 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
     image={images.presentacionTrajeGala}
     imageAlt="Fotografía de grupo de la agrupación musical con el traje de gala, con tambores y bombos en primer término ante un retablo dorado."
     imagePosition="50% 0%"
-    imageClass="origin-top scale-[1.16]"
+    imageLeft="36%"
     imageWidths={[800, 1280, 1600]}
   >
-    Agrupación Musical <span class="gold-text">Nuestro Padre Jesús Nazareno</span>
+    <span class="block text-[0.8em]">Agrupación Musical</span> <span class="gold-text bg-linear-to-r from-gold-500 from-20% via-gold-300 via-55% to-lilac-300 to-85% bg-clip-text pr-[0.1em] text-transparent">Nuestro Padre Jesús Nazareno</span>
     <Fragment slot="lede">Música, sentimiento y pasión a los pies del Nazareno.</Fragment>
   </PageHero>
 
@@ -45,8 +45,8 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
           </p>
         </div>
         <div class="mt-10 flex flex-wrap gap-4">
-          <ButtonLink href="#repertorio">Ver repertorio</ButtonLink>
-          <ButtonLink href="#contratacion" variant="outline">Contratación</ButtonLink>
+          <ButtonLink href="#repertorio"><Icon name="music" />Ver repertorio</ButtonLink>
+          <ButtonLink href="#contratacion" variant="outline"><Icon name="handshake" />Contratación</ButtonLink>
         </div>
       </div>
       <div class="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none">
@@ -76,7 +76,7 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
         </div>
       </div>
       <div class="lg:col-span-8">
-        <Timeline items={agrupacionHitos} />
+        <Timeline items={agrupacionHitos} previous={agrupacionHistoriaAnterior} />
       </div>
     </div>
   </section>
@@ -240,7 +240,7 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
           <p>Mientras tanto, puedes escribirnos a través de nuestras redes sociales o de la página de contacto.</p>
         </div>
         <div class="mt-8">
-          <ButtonLink href="/contacto/">Ir a contacto</ButtonLink>
+          <ButtonLink href="/contacto/"><Icon name="mail" />Ir a contacto</ButtonLink>
         </div>
       </div>
     </div>

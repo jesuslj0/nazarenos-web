@@ -57,7 +57,8 @@ export const agrupacionResumen = [
   'Música, sentimiento y pasión caracterizan a esta notable agrupación, cuyas magnum opus, interpretadas en la semana más santa, nos estremecen a los pies del Nazareno.',
 ];
 
-export const agrupacionHitos: Hito[] = [
+/** Historia anterior a 2018, plegada por defecto en la cronología. */
+export const agrupacionHistoriaAnterior: Hito[] = [
   {
     when: 'Años 40',
     title: 'Los orígenes',
@@ -93,6 +94,9 @@ export const agrupacionHitos: Hito[] = [
     title: 'Sones de Música Cofrade',
     text: 'Participa en la grabación de «Sones de Música Cofrade – Semana Santa El Bonillo», editado por el Excmo. Ayuntamiento de El Bonillo.',
   },
+];
+
+export const agrupacionHitos: Hito[] = [
   {
     when: 'Marzo de 2018',
     title: 'VI Certamen de Bandas «Beas Cofrade»',

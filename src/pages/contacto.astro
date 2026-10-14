@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import SectionHeading from '../components/ui/SectionHeading.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
+import Icon from '../components/ui/Icon.astro';
 import { contact, site, socials } from '../data/site';
 
 const datos = [
@@ -98,7 +99,7 @@ const datos = [
           Consulta cómo llegar a la parroquia en el mapa.
         </p>
         <div>
-          <ButtonLink href={contact.seatMapUrl} external>Abrir en el mapa</ButtonLink>
+          <ButtonLink href={contact.seatMapUrl} external><Icon name="mapPin" />Abrir en el mapa</ButtonLink>
         </div>
       </div>
     </div>
