@@ -1,0 +1,247 @@
+---
+import { instrumentosFormacion, type Instrumento, type InstrumentoId, type Integrante } from '../../data/formacion';
+import { Image } from 'astro:assets';
+import { instrumentos } from '../../data/images';
+import Photo from '../ui/Photo.astro';
+
+interface Props {
+  filas: Integrante[][];
+}
+
+const { filas } = Astro.props;
+
+const golpeador = (integrante: Integrante) => {
+  const instrumento: Instrumento = instrumentosFormacion[integrante.instrumento];
+  return instrumento.golpeador;
+};
+const grupoDe = (id: InstrumentoId) => (instrumentosFormacion[id] as Instrumento).grupo ?? id;
+const ids = (Object.keys(instrumentosFormacion) as InstrumentoId[]).filter((id) => grupoDe(id) === id);
+const cuenta = (id: InstrumentoId) => filas.flat().filter((m) => grupoDe(m.instrumento) === id).length;
+---
+
+<div data-formacion>
+  <ul class="flex flex-wrap gap-2" aria-label="Filtrar por instrumento">
+    {
+      ids.map((id) => (
+        <li>
+          <button
+            type="button"
+            data-filtro={id}
+            aria-pressed="false"
+            class="flex items-center gap-2 border border-gold-500/30 py-1 pr-3 pl-1.5 text-xs text-ivory-muted transition-colors hover:border-gold-500 hover:text-ivory aria-pressed:border-gold-500 aria-pressed:bg-gold-500/15 aria-pressed:text-ivory sm:text-sm"
+          >
+            <Photo
+              src={instrumentosFormacion[id].image}
+              alt=""
+              widths={[64, 128]}
+              sizes="2rem"
+              class="size-7 object-contain sm:size-8"
+            />
+            {instrumentosFormacion[id].plural}
+            <span class="font-accent text-gold-500 italic">{cuenta(id)}</span>
+          </button>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div
+    class="mt-8 space-y-5 border border-gold-500/25 bg-ink-900 px-2 py-8 sm:space-y-7 sm:px-6 lg:px-8 lg:py-12"
+    role="group"
+    aria-label="Formación de la agrupación, de delante hacia atrás"
+  >
+    {
+      filas.map((fila) => (
+        <ul class="flex flex-wrap justify-center gap-x-0.5 gap-y-4 sm:gap-x-2">
+          {fila.map((integrante) => (
+            <li
+              data-instrumento={grupoDe(integrante.instrumento)}
+              class="group relative flex w-16 flex-col items-center transition-opacity duration-300 hover:z-10 data-[dim]:opacity-25 sm:w-20 lg:w-[5.25rem]"
+            >
+              <span
+                class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1 -translate-x-1/2 text-[0.7rem] leading-tight font-medium whitespace-nowrap text-gold-300 opacity-0 [text-shadow:0_0_6px_var(--color-ink-950),0_1px_2px_var(--color-ink-950)] transition-opacity duration-200 group-hover:opacity-100"
+                aria-hidden="true"
+              >
+                {instrumentosFormacion[integrante.instrumento].nombre}
+              </span>
+              <span class="relative size-14 transition duration-300 ease-out group-hover:-translate-y-1.5 group-hover:scale-125 group-hover:drop-shadow-[0_8px_14px_rgb(224_176_58/0.45)] sm:size-[4.5rem] lg:size-20">
+                <Photo
+                  src={instrumentosFormacion[integrante.instrumento].image}
+                  alt={instrumentosFormacion[integrante.instrumento].nombre}
+                  widths={[112, 224]}
+                  sizes="(min-width: 64rem) 5rem, (min-width: 40rem) 4.5rem, 3.5rem"
+                  class:list={['size-full object-contain', (instrumentosFormacion[integrante.instrumento] as Instrumento).vibra && 'vibra']}
+                />
+                {golpeador(integrante) === 'palillos' && (
+                  <>
+                    <Image src={instrumentos.palillo} alt="" height={420} class="palillo palillo-izq" aria-hidden="true" />
+                    <Image src={instrumentos.palillo} alt="" height={420} class="palillo palillo-der" aria-hidden="true" />
+                  </>
+                )}
+                {golpeador(integrante) === 'maza' && (
+                  <Image src={instrumentos.maza} alt="" height={192} class="maza" aria-hidden="true" />
+                )}
+              </span>
+              <span class="mt-1 text-center text-[0.7rem] leading-tight text-ivory-muted transition-colors duration-200 group-hover:text-gold-300 sm:text-xs">
+                {integrante.nombre}
+              </span>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* El golpeador gira desde el extremo que se sujeta (transform-origin) y golpea el parche. */
+  .palillo,
+  .maza {
+    position: absolute;
+    width: auto;
+    max-width: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .palillo {
+    top: -2%;
+    width: 4.2%;
+    height: 52%;
+    transform-origin: 50% 0;
+  }
+
+  .palillo-izq {
+    left: 2%;
+    transform: rotate(-50deg);
+  }
+
+  .palillo-der {
+    right: 2%;
+    transform: rotate(50deg);
+  }
+
+  .maza {
+    top: 10%;
+    left: 82%;
+    height: 48%;
+    transform-origin: 50% 100%;
+    transform: translate(-50%, -100%) rotate(192deg);
+  }
+
+  .group:hover .vibra {
+    transform-origin: 50% 25%;
+    animation: vibra 1.1s ease-out infinite;
+  }
+
+  .group:hover .palillo,
+  .group:hover .maza {
+    opacity: 1;
+  }
+
+  .group:hover .palillo-izq {
+    animation: golpe-izq 0.3s ease-in infinite alternate;
+  }
+
+  .group:hover .palillo-der {
+    animation: golpe-der 0.3s ease-in infinite alternate -0.3s;
+  }
+
+  .group:hover .maza {
+    animation: golpe-maza 0.8s ease-in-out infinite alternate;
+  }
+
+  @keyframes golpe-izq {
+    from {
+      transform: rotate(-58deg);
+    }
+    to {
+      transform: rotate(-43deg);
+    }
+  }
+
+  @keyframes golpe-der {
+    from {
+      transform: rotate(58deg);
+    }
+    to {
+      transform: rotate(43deg);
+    }
+  }
+
+  /* Golpe de platillos: vibración que se amortigua hasta el siguiente golpe. */
+  @keyframes vibra {
+    0%,
+    55%,
+    100% {
+      transform: none;
+    }
+    4% {
+      transform: translateX(-1px) rotate(4deg);
+    }
+    9% {
+      transform: translateX(1px) rotate(-3.6deg);
+    }
+    14% {
+      transform: translateX(-1px) rotate(3deg);
+    }
+    19% {
+      transform: translateX(1px) rotate(-2.4deg);
+    }
+    24% {
+      transform: translateX(-0.5px) rotate(1.9deg);
+    }
+    30% {
+      transform: translateX(0.5px) rotate(-1.4deg);
+    }
+    37% {
+      transform: rotate(0.9deg);
+    }
+    45% {
+      transform: rotate(-0.4deg);
+    }
+  }
+
+  /* Péndulo: la maza cuelga del mango, se aleja del bombo y vuelve a golpear el parche. */
+  @keyframes golpe-maza {
+    from {
+      transform: translate(-50%, -100%) rotate(145deg);
+    }
+    to {
+      transform: translate(-50%, -100%) rotate(192deg);
+    }
+  }
+</style>
+
+<script>
+  const mapa = document.querySelector<HTMLElement>('[data-formacion]');
+
+  if (mapa) {
+    const miembros = Array.from(mapa.querySelectorAll<HTMLElement>('li[data-instrumento]'));
+    const filtros = Array.from(mapa.querySelectorAll<HTMLButtonElement>('button[data-filtro]'));
+    let fijado: string | null = null;
+    let sobrevolado: string | null = null;
+
+    const pintar = () => {
+      const activo = sobrevolado ?? fijado;
+      miembros.forEach((m) => m.toggleAttribute('data-dim', activo !== null && m.dataset.instrumento !== activo));
+      filtros.forEach((f) => f.setAttribute('aria-pressed', String(f.dataset.filtro === fijado)));
+    };
+
+    const sobrevolar = (el: HTMLElement, id: string | undefined) => {
+      el.addEventListener('mouseenter', () => ((sobrevolado = id ?? null), pintar()));
+      el.addEventListener('mouseleave', () => ((sobrevolado = null), pintar()));
+    };
+
+    miembros.forEach((m) => sobrevolar(m, m.dataset.instrumento));
+    filtros.forEach((f) => {
+      sobrevolar(f, f.dataset.filtro);
+      f.addEventListener('click', () => {
+        fijado = fijado === f.dataset.filtro ? null : (f.dataset.filtro ?? null);
+        if (!fijado) sobrevolado = null;
+        pintar();
+      });
+    });
+  }
+</script>

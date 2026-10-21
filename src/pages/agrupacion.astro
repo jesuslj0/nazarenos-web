@@ -6,12 +6,31 @@ import SectionHeading from '../components/ui/SectionHeading.astro';
 import Icon from '../components/ui/Icon.astro';
 import Timeline from '../components/ui/Timeline.astro';
 import ButtonLink from '../components/ui/ButtonLink.astro';
+import FormacionMapa from '../components/agrupacion/FormacionMapa.astro';
 import { actuaciones } from '../data/actuaciones';
+import { formacion } from '../data/formacion';
 import { images } from '../data/images';
 import { agrupacionHistoriaAnterior, agrupacionHitos, agrupacionResumen, repertorio } from '../data/historia';
 import { contact, site } from '../data/site';
 
 const [campoCriptana, torredonjimeno, valencia] = actuaciones;
+
+const leyenda = [
+  {
+    clave: 'nueva',
+    icon: 'sparkles',
+    color: 'text-gold-500',
+    boton: 'hover:border-gold-500/60 aria-pressed:border-gold-500 aria-pressed:bg-gold-500/15',
+    label: 'Nueva incorporación',
+  },
+  {
+    clave: 'propia',
+    icon: 'heart',
+    color: 'text-lilac-300',
+    boton: 'hover:border-lilac-300/60 aria-pressed:border-lilac-300 aria-pressed:bg-lilac-300/15',
+    label: 'Marcha propia',
+  },
+] as const;
 ---
 
 <BaseLayout
@@ -63,20 +82,18 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
     </div>
   </section>
 
-  <section class="section border-y border-gold-500/20 bg-ink-950" aria-labelledby="historia">
-    <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-20">
-      <div class="lg:col-span-4">
-        <div class="lg:sticky lg:top-28">
-          <SectionHeading eyebrow="Historia">
-            <span id="historia">De las cornetas y tambores a la <span class="gold-text">agrupación</span></span>
-          </SectionHeading>
-          <p class="mt-8 text-sm text-ivory-muted">
-            <span class="pending">[Pendiente: año exacto de fundación de la agrupación]</span>
-          </p>
-        </div>
-      </div>
-      <div class="lg:col-span-8">
-        <Timeline items={agrupacionHitos} previous={agrupacionHistoriaAnterior} />
+  <section id="formacion" class="section scroll-mt-20 border-y border-gold-500/20 bg-ink-800/50" aria-labelledby="formacion-titulo">
+    <div class="container-page">
+      <SectionHeading eyebrow="Integrantes">
+        <span id="formacion-titulo">Nuestra <span class="gold-text">formación</span></span>
+        <Fragment slot="intro">
+          Os invitamos a conocer a los músicos que dan voz a la agrupación y la riqueza de instrumentos que
+          componen su sonido, del redoble del tambor al timbre dorado del metal.
+        </Fragment>
+      </SectionHeading>
+
+      <div class="mt-12">
+        <FormacionMapa filas={formacion} />
       </div>
     </div>
   </section>
@@ -91,18 +108,35 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
             conjugando arte, composición y armonía.
           </Fragment>
         </SectionHeading>
-        <ul class="flex shrink-0 flex-wrap gap-x-6 gap-y-2 text-sm text-ivory-muted" aria-label="Leyenda">
-          <li class="flex items-center gap-2"><Icon name="sparkles" class="size-4 text-gold-500" />Nueva incorporación</li>
-          <li class="flex items-center gap-2"><Icon name="heart" class="size-4 text-lilac-300" />Marcha propia</li>
+        <ul class="flex shrink-0 flex-wrap gap-x-3 gap-y-2 text-sm text-ivory-muted" aria-label="Leyenda: destacar marchas">
+          {
+            leyenda.map((item) => (
+              <li>
+                <button
+                  type="button"
+                  data-destacar={item.clave}
+                  aria-pressed="false"
+                  class:list={['flex items-center gap-2 border border-transparent px-3 py-1.5 transition-colors hover:text-ivory aria-pressed:text-ivory', item.boton]}
+                >
+                  <Icon name={item.icon} class={`size-4 ${item.color}`} />
+                  {item.label}
+                </button>
+              </li>
+            ))
+          }
         </ul>
       </div>
 
-      <ol class="mt-12 gap-x-12 sm:columns-2 lg:columns-3">
+      <ol class="mt-12 gap-x-12 sm:columns-2 lg:columns-3" data-repertorio>
         {
           repertorio.map((obra) => (
-            <li class="break-inside-avoid border-t border-gold-500/25 py-3">
+            <li
+              class="group -mx-2 break-inside-avoid border-t border-gold-500/25 px-2 py-3 transition duration-300 data-[dim]:opacity-30 data-[on=nueva]:border-gold-500 data-[on=nueva]:bg-gold-500/10 data-[on=propia]:border-lilac-300 data-[on=propia]:bg-lilac-300/10"
+              data-nueva={obra.nueva || undefined}
+              data-propia={obra.propia || undefined}
+            >
               <p class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span class="font-display text-lg leading-tight sm:text-xl">{obra.title}</span>
+                <span class="font-display text-lg leading-tight transition-colors duration-300 group-data-[on=nueva]:text-gold-300 group-data-[on=propia]:text-lilac-200 sm:text-xl">{obra.title}</span>
                 {obra.nueva && (
                   <span class="inline-flex text-gold-500" title="Nueva incorporación">
                     <Icon name="sparkles" class="size-4" />
@@ -124,7 +158,25 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
     </div>
   </section>
 
-  <section class="section border-y border-gold-500/20 bg-ink-950" aria-labelledby="actividad">
+  <section class="section border-y border-gold-500/20 bg-ink-950" aria-labelledby="historia">
+    <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-20">
+      <div class="lg:col-span-4">
+        <div class="lg:sticky lg:top-28">
+          <SectionHeading eyebrow="Historia">
+            <span id="historia">De las cornetas y tambores a la <span class="gold-text">agrupación</span></span>
+          </SectionHeading>
+          <p class="mt-8 text-sm text-ivory-muted">
+            <span class="pending">[Pendiente: año exacto de fundación de la agrupación]</span>
+          </p>
+        </div>
+      </div>
+      <div class="lg:col-span-8">
+        <Timeline items={agrupacionHitos} previous={agrupacionHistoriaAnterior} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section border-y border-gold-500/20 bg-ink-800/50" aria-labelledby="actividad">
     <div class="container-page">
       <SectionHeading eyebrow="Actuaciones y actividad musical">
         <span id="actividad">Más allá de <span class="gold-text">El Bonillo</span></span>
@@ -246,3 +298,35 @@ const [campoCriptana, torredonjimeno, valencia] = actuaciones;
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const lista = document.querySelector<HTMLElement>('[data-repertorio]');
+
+  if (lista) {
+    const marchas = Array.from(lista.querySelectorAll<HTMLElement>('li'));
+    const botones = Array.from(document.querySelectorAll<HTMLButtonElement>('button[data-destacar]'));
+    let fijado: string | null = null;
+    let sobrevolado: string | null = null;
+
+    const pintar = () => {
+      const activo = sobrevolado ?? fijado;
+      marchas.forEach((m) => {
+        const coincide = activo !== null && m.hasAttribute(`data-${activo}`);
+        if (coincide && activo) m.setAttribute('data-on', activo);
+        else m.removeAttribute('data-on');
+        m.toggleAttribute('data-dim', activo !== null && !coincide);
+      });
+      botones.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.destacar === fijado)));
+    };
+
+    botones.forEach((b) => {
+      b.addEventListener('mouseenter', () => ((sobrevolado = b.dataset.destacar ?? null), pintar()));
+      b.addEventListener('mouseleave', () => ((sobrevolado = null), pintar()));
+      b.addEventListener('click', () => {
+        fijado = fijado === b.dataset.destacar ? null : (b.dataset.destacar ?? null);
+        if (!fijado) sobrevolado = null;
+        pintar();
+      });
+    });
+  }
+</script>
