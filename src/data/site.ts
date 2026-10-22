@@ -34,6 +34,11 @@ export interface SocialLink {
 
 export const socials: SocialLink[] = [
   {
+    network: 'Facebook',
+    handle: 'AM Ntro. Padre Jesús Nazareno El Bonillo',
+    href: 'https://www.facebook.com/p/AM-Ntro-Padre-Jes%C3%BAs-Nazareno-El-Bonillo-100063969043303/',
+  },
+  {
     network: 'Instagram',
     handle: '@amj.nazarenoelbonillo',
     href: 'https://www.instagram.com/amj.nazarenoelbonillo/',
@@ -43,11 +48,7 @@ export const socials: SocialLink[] = [
     handle: '@amj.nazarenoelbonillo',
     href: 'https://www.tiktok.com/@amj.nazarenoelbonillo',
   },
-  {
-    network: 'Facebook',
-    handle: 'AM Ntro. Padre Jesús Nazareno El Bonillo',
-    href: 'https://www.facebook.com/p/AM-Ntro-Padre-Jes%C3%BAs-Nazareno-El-Bonillo-100063969043303/',
-  },
+  
 ];
 
 /** Datos de contacto: `null` indica que el dato aún no se ha facilitado. */

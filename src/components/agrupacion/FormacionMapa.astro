@@ -1,14 +1,87 @@
 ---
-import { instrumentosFormacion, type Instrumento, type InstrumentoId, type Integrante } from '../../data/formacion';
+import { instrumentosFormacion, type Instrumento, type InstrumentoId, type Integrante, type Seccion } from '../../data/formacion';
 import { Image } from 'astro:assets';
 import { instrumentos } from '../../data/images';
 import Photo from '../ui/Photo.astro';
 
 interface Props {
-  filas: Integrante[][];
+  secciones: Seccion[];
 }
 
-const { filas } = Astro.props;
+const { secciones } = Astro.props;
+
+/* Geometría del escenario en rem: los arcos se calculan aquí para colocar a cada músico sobre su grada curva. */
+const INCLINACION = 42;
+const RADIO = 55;
+const FONDO = 5.4;
+const PASO = 1.5;
+const SEPARACION = 4.2;
+const PIES = 0.9;
+const ANCHO_SUELO = 67;
+/* Ancho de la grada delantera respecto a la trasera: las gradas se abren hacia atrás. */
+const BORDE_DELANTERO = 0.82;
+const ANCHO_ATRIL = 7;
+const ANCHO_ETIQUETA = 5;
+
+const redondear = (valor: number) => Math.round(valor * 100) / 100;
+
+/** Desplazamiento hacia delante de cada músico para que la fila describa un arco de radio `radio` en torno al director. */
+const arco = (cantidad: number, radio: number) =>
+  Array.from({ length: cantidad }, (_, i) => {
+    const dx = (i - (cantidad - 1) / 2) * SEPARACION;
+    return redondear(radio - Math.sqrt(radio ** 2 - dx ** 2));
+  });
+
+const total = secciones.filter((s) => !s.atril).reduce((suma, s) => suma + s.filas.length, 0);
+let escalon = 0;
+
+const gradas = secciones.flatMap((seccion) =>
+  seccion.filas.map((fila, i) => {
+    const titulo = i === 0 ? seccion.nombre : undefined;
+
+    if (seccion.atril) {
+      return {
+        fila,
+        titulo,
+        atril: true,
+        dy: fila.map(() => 0),
+        style: `--mitad: ${ANCHO_ATRIL / 2}rem; --dy0: 0rem; --giro: 0deg`,
+      };
+    }
+
+    const interior = RADIO + escalon * FONDO;
+    const exterior = interior + FONDO;
+    const alto = redondear(exterior - Math.sqrt(interior ** 2 - (ANCHO_SUELO / 2) ** 2));
+    const radio = interior + PIES;
+    const dy = arco(fila.length, radio);
+    /* El rótulo se apoya sobre el arco a su altura y se gira según la pendiente de la curva, vista con la inclinación del escenario. */
+    const mitad = redondear((fila.length * SEPARACION) / 2);
+    const bordeRotulo = mitad + 0.75;
+    const centroRotulo = bordeRotulo + ANCHO_ETIQUETA / 2;
+    const pendiente = centroRotulo / Math.sqrt(radio ** 2 - centroRotulo ** 2);
+    const giro = redondear((Math.atan(Math.cos((INCLINACION * Math.PI) / 180) * pendiente) * 180) / Math.PI);
+    const arriba = (total - 1 - escalon) * FONDO;
+    const mitadAncho = (y: number) => redondear(50 * (1 - (1 - BORDE_DELANTERO) * (y / (total * FONDO))));
+    const recorte = [
+      `${50 - mitadAncho(arriba)}% 0`,
+      `${50 + mitadAncho(arriba)}% 0`,
+      `${50 + mitadAncho(arriba + alto)}% ${alto}rem`,
+      `${50 - mitadAncho(arriba + alto)}% ${alto}rem`,
+    ].join(', ');
+    const style = [
+      `--n: ${escalon++}`,
+      `--rin: ${interior}rem`,
+      `--rout: ${exterior}rem`,
+      `--alto: ${alto}rem`,
+      `--recorte: ${recorte}`,
+      `--mitad: ${mitad}rem`,
+      `--dy0: ${redondear(radio - Math.sqrt(radio ** 2 - bordeRotulo ** 2))}rem`,
+      `--giro: ${giro}deg`,
+    ].join('; ');
+
+    return { fila, titulo, atril: false, dy, style };
+  }),
+);
 
 const golpeador = (integrante: Integrante) => {
   const instrumento: Instrumento = instrumentosFormacion[integrante.instrumento];
@@ -16,11 +89,82 @@ const golpeador = (integrante: Integrante) => {
 };
 const grupoDe = (id: InstrumentoId) => (instrumentosFormacion[id] as Instrumento).grupo ?? id;
 const ids = (Object.keys(instrumentosFormacion) as InstrumentoId[]).filter((id) => grupoDe(id) === id);
-const cuenta = (id: InstrumentoId) => filas.flat().filter((m) => grupoDe(m.instrumento) === id).length;
+/* El nombre de cada grupo se muestra a la derecha de la fila donde más músicos suyos hay. */
+const filaDeGrupo = new Map(
+  ids.map((id) => {
+    const cantidades = gradas.map((g) => g.fila.filter((m) => grupoDe(m.instrumento) === id).length);
+    return [id, cantidades.indexOf(Math.max(...cantidades))] as const;
+  }),
+);
+const cuenta = (id: InstrumentoId) => gradas.flatMap((g) => g.fila).filter((m) => grupoDe(m.instrumento) === id).length;
 ---
 
 <div data-formacion>
-  <ul class="flex flex-wrap gap-2" aria-label="Filtrar por instrumento">
+  <div
+    style={`--fondo: ${FONDO}rem; --paso: ${PASO}rem; --pies: ${PIES}rem; --sep: ${SEPARACION}rem; --inclinacion: ${INCLINACION}deg`}
+    class="escenario px-2 py-8 sm:px-6 lg:px-8 lg:py-12"
+    role="group"
+    aria-label="Formación de la agrupación por secciones, de delante hacia atrás"
+  >
+    <div class="escena" style={`--total: ${total}`}>
+      <div class="suelo" aria-hidden="true">
+        {gradas.map(({ atril, style }) => <div class={atril ? 'placa' : 'lamina'} style={style} />)}
+      </div>
+      <div class="tablado flex flex-col">
+      {
+        gradas.map(({ fila, titulo, atril, dy, style }, n) => (
+          <div class:list={['grada', atril && 'atril', titulo ? 'mt-10 first:mt-0' : 'mt-5 sm:mt-7']} style={style}>
+            {titulo && (
+              <h3 class="titulo mb-4 flex items-center gap-3 text-xs font-medium tracking-[0.18em] text-gold-500 uppercase after:h-px after:flex-1 after:bg-linear-to-r after:from-gold-500/40 after:to-transparent">
+                {titulo}
+              </h3>
+            )}
+            <ul class="fila flex flex-wrap justify-center gap-x-0.5 gap-y-4 sm:gap-x-2">
+              {fila.map((integrante, i) => (
+                <li
+                  style={`--dy: ${dy[i]}rem`}
+                  data-instrumento={grupoDe(integrante.instrumento)}
+                  class="group relative flex w-16 flex-col items-center transition-opacity duration-300 hover:z-10 data-[dim]:opacity-25 sm:w-20"
+                >
+                  <span class="figura relative size-14 transition duration-300 ease-out group-hover:-translate-y-1.5 group-hover:scale-125 group-hover:drop-shadow-[0_8px_14px_rgb(224_176_58/0.45)] sm:size-[4.5rem]">
+                    <Photo
+                      src={instrumentosFormacion[integrante.instrumento].image}
+                      alt={instrumentosFormacion[integrante.instrumento].nombre}
+                      widths={[112, 224]}
+                      sizes="(min-width: 40rem) 4.5rem, 3.5rem"
+                      class:list={['size-full object-contain', (instrumentosFormacion[integrante.instrumento] as Instrumento).vibra && 'vibra']}
+                    />
+                    {golpeador(integrante) === 'palillos' && (
+                      <>
+                        <Image src={instrumentos.palillo} alt="" height={420} class="palillo palillo-izq" aria-hidden="true" />
+                        <Image src={instrumentos.palillo} alt="" height={420} class="palillo palillo-der" aria-hidden="true" />
+                      </>
+                    )}
+                    {golpeador(integrante) === 'maza' && (
+                      <Image src={instrumentos.maza} alt="" height={192} class="maza" aria-hidden="true" />
+                    )}
+                  </span>
+                  <span class="mt-1 origin-top text-center text-[0.7rem] leading-tight text-ivory-muted transition-[color,scale] duration-200 group-hover:scale-115 group-hover:text-gold-300 sm:text-xs">
+                    {integrante.nombre}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {ids
+              .filter((id) => filaDeGrupo.get(id) === n)
+              .map((id) => (
+                <span class="grupo" data-grupo={id} aria-hidden="true">
+                  {instrumentosFormacion[id].plural}
+                </span>
+              ))}
+          </div>
+        ))
+      }
+      </div>
+    </div>
+  </div>
+
+  <ul class="mt-8 flex flex-wrap gap-2" aria-label="Filtrar por instrumento">
     {
       ids.map((id) => (
         <li>
@@ -44,56 +188,204 @@ const cuenta = (id: InstrumentoId) => filas.flat().filter((m) => grupoDe(m.instr
       ))
     }
   </ul>
-
-  <div
-    class="mt-8 space-y-5 border border-gold-500/25 bg-ink-900 px-2 py-8 sm:space-y-7 sm:px-6 lg:px-8 lg:py-12"
-    role="group"
-    aria-label="Formación de la agrupación, de delante hacia atrás"
-  >
-    {
-      filas.map((fila) => (
-        <ul class="flex flex-wrap justify-center gap-x-0.5 gap-y-4 sm:gap-x-2">
-          {fila.map((integrante) => (
-            <li
-              data-instrumento={grupoDe(integrante.instrumento)}
-              class="group relative flex w-16 flex-col items-center transition-opacity duration-300 hover:z-10 data-[dim]:opacity-25 sm:w-20 lg:w-[5.25rem]"
-            >
-              <span
-                class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-1 -translate-x-1/2 text-[0.7rem] leading-tight font-medium whitespace-nowrap text-gold-300 opacity-0 [text-shadow:0_0_6px_var(--color-ink-950),0_1px_2px_var(--color-ink-950)] transition-opacity duration-200 group-hover:opacity-100"
-                aria-hidden="true"
-              >
-                {instrumentosFormacion[integrante.instrumento].nombre}
-              </span>
-              <span class="relative size-14 transition duration-300 ease-out group-hover:-translate-y-1.5 group-hover:scale-125 group-hover:drop-shadow-[0_8px_14px_rgb(224_176_58/0.45)] sm:size-[4.5rem] lg:size-20">
-                <Photo
-                  src={instrumentosFormacion[integrante.instrumento].image}
-                  alt={instrumentosFormacion[integrante.instrumento].nombre}
-                  widths={[112, 224]}
-                  sizes="(min-width: 64rem) 5rem, (min-width: 40rem) 4.5rem, 3.5rem"
-                  class:list={['size-full object-contain', (instrumentosFormacion[integrante.instrumento] as Instrumento).vibra && 'vibra']}
-                />
-                {golpeador(integrante) === 'palillos' && (
-                  <>
-                    <Image src={instrumentos.palillo} alt="" height={420} class="palillo palillo-izq" aria-hidden="true" />
-                    <Image src={instrumentos.palillo} alt="" height={420} class="palillo palillo-der" aria-hidden="true" />
-                  </>
-                )}
-                {golpeador(integrante) === 'maza' && (
-                  <Image src={instrumentos.maza} alt="" height={192} class="maza" aria-hidden="true" />
-                )}
-              </span>
-              <span class="mt-1 text-center text-[0.7rem] leading-tight text-ivory-muted transition-colors duration-200 group-hover:text-gold-300 sm:text-xs">
-                {integrante.nombre}
-              </span>
-            </li>
-          ))}
-        </ul>
-      ))
-    }
-  </div>
 </div>
 
 <style>
+  .suelo,
+  .grupo {
+    display: none;
+  }
+
+  /*
+   * Escritorio: el tablado se inclina como un suelo visto desde arriba y cada fila es una grada elevada con forma de arco.
+   * Los músicos se contrarrotan para quedar de pie. En pantallas pequeñas se mantiene plano.
+   */
+  @media (min-width: 70rem) {
+    .escenario {
+      padding-top: 8rem;
+      padding-bottom: 9rem;
+    }
+
+    .escena {
+      position: relative;
+      perspective: 3000px;
+      perspective-origin: 50% 20%;
+      height: calc(var(--total) * var(--fondo));
+      margin-top: calc(var(--total) * var(--fondo) * (cos(var(--inclinacion)) - 1));
+    }
+
+    /* El suelo y los músicos son dos escenas 3D superpuestas: así las láminas nunca se ordenan en profundidad con las figuras. */
+    .suelo,
+    .tablado {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transform-origin: 50% 100%;
+      transform: rotateX(var(--inclinacion));
+    }
+
+    .suelo {
+      display: block;
+      pointer-events: none;
+    }
+
+    .lamina,
+    .placa {
+      position: absolute;
+      transform-style: preserve-3d;
+    }
+
+    .lamina::before,
+    .lamina::after,
+    .placa::before,
+    .placa::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Lámina en arco de cada grada (::before), con filete dorado en el borde delantero. */
+    .lamina {
+      top: calc((var(--total) - 1 - var(--n)) * var(--fondo));
+      left: 0;
+      width: 100%;
+      height: var(--alto);
+      transform: translateZ(calc(var(--n) * var(--paso)));
+    }
+
+    .lamina::before,
+    .lamina::after {
+      clip-path: polygon(var(--recorte));
+    }
+
+    .lamina::before {
+      background: radial-gradient(
+        circle at 50% var(--rout),
+        transparent calc(var(--rin) - 0.04rem),
+        color-mix(in srgb, var(--color-gold-500) 90%, transparent) var(--rin),
+        color-mix(in srgb, var(--color-gold-500) 90%, transparent) calc(var(--rin) + 0.06rem),
+        var(--color-ink-700) calc(var(--rin) + 0.1rem),
+        var(--color-ink-700) calc(var(--rin) + var(--fondo) * 0.72),
+        var(--color-ink-950) calc(var(--rout) - 0.02rem),
+        transparent calc(var(--rout) + 0.04rem)
+      );
+    }
+
+    /* Contrapaso (::after): la misma lámina un escalón más abajo asoma justo bajo el filete dorado. */
+    .lamina::after {
+      transform: translateZ(calc(var(--paso) * -1));
+      background: radial-gradient(
+        circle at 50% var(--rout),
+        transparent calc(var(--rin) - 0.04rem),
+        var(--color-ink-900) var(--rin),
+        var(--color-ink-950) calc(var(--rin) + var(--paso)),
+        var(--color-ink-950) calc(var(--rout) - 0.02rem),
+        transparent calc(var(--rout) + 0.04rem)
+      );
+    }
+
+    /* Atril del director: una casilla elevada delante de la primera grada. */
+    .placa {
+      top: calc(100% + 3rem);
+      left: 50%;
+      width: 7rem;
+      height: 3.8rem;
+      translate: -50% 0;
+      transform: translateZ(var(--paso));
+    }
+
+    .placa::before {
+      border: 1px solid color-mix(in srgb, var(--color-gold-500) 90%, transparent);
+      background: linear-gradient(to bottom, var(--color-ink-700), var(--color-violet-600));
+    }
+
+    .placa::after {
+      transform: translateZ(calc(var(--paso) * -1));
+      background: linear-gradient(to bottom, var(--color-ink-900), var(--color-ink-950));
+    }
+
+    .grada {
+      position: absolute;
+      inset-inline: 0;
+      top: calc((var(--total) - 1 - var(--n)) * var(--fondo));
+      height: var(--fondo);
+      margin: 0;
+      pointer-events: none;
+      transform-style: preserve-3d;
+      transform: translateZ(calc(var(--n) * var(--paso)));
+    }
+
+    .atril {
+      inset-inline: auto;
+      top: calc(100% + 3rem);
+      left: 50%;
+      width: 7rem;
+      height: 3.8rem;
+      translate: -50% 0;
+      transform: translateZ(var(--paso));
+    }
+
+    /* Nombre del grupo seleccionado, a la derecha de su fila y girado según la curva. */
+    .grupo {
+      position: absolute;
+      left: calc(50% + var(--mitad) + 0.75rem);
+      bottom: var(--pies);
+      display: block;
+      white-space: nowrap;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--color-gold-300);
+      text-shadow: 0 0 6px var(--color-ink-950), 0 1px 2px var(--color-ink-950);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+      transform-origin: 0 100%;
+      transform: translateY(var(--dy0)) rotateX(calc(var(--inclinacion) * -1)) rotateZ(var(--giro));
+    }
+
+    .grupo[data-activo] {
+      opacity: 1;
+    }
+
+    .titulo {
+      position: absolute;
+      right: calc(50% + var(--mitad) + 0.75rem);
+      bottom: var(--pies);
+      display: block;
+      margin: 0;
+      white-space: nowrap;
+      transform-origin: 100% 100%;
+      transform: translateY(var(--dy0)) rotateX(calc(var(--inclinacion) * -1)) rotateZ(calc(var(--giro) * -1));
+    }
+
+    .fila {
+      position: absolute;
+      inset: 0;
+      flex-wrap: nowrap;
+      align-items: flex-end;
+      padding-bottom: var(--pies);
+      column-gap: 0.25rem;
+      transform-style: preserve-3d;
+    }
+
+    .fila > li {
+      width: calc(var(--sep) - 0.25rem);
+      pointer-events: auto;
+      transform-style: preserve-3d;
+      transform-origin: 50% 100%;
+      transform: translateY(var(--dy)) rotateX(calc(var(--inclinacion) * -1));
+    }
+
+    .fila > li > span:last-child {
+      white-space: nowrap;
+    }
+
+    .figura {
+      width: calc(var(--sep) * 0.875);
+      height: calc(var(--sep) * 0.875);
+    }
+  }
+
   /* El golpeador gira desde el extremo que se sujeta (transform-origin) y golpea el parche. */
   .palillo,
   .maza {
@@ -149,7 +441,7 @@ const cuenta = (id: InstrumentoId) => filas.flat().filter((m) => grupoDe(m.instr
   }
 
   .group:hover .maza {
-    animation: golpe-maza 0.8s ease-in-out infinite alternate;
+    animation: golpe-maza 0.8s cubic-bezier(0.5, 0.20, 1, 0.1) infinite alternate;
   }
 
   @keyframes golpe-izq {
@@ -220,6 +512,7 @@ const cuenta = (id: InstrumentoId) => filas.flat().filter((m) => grupoDe(m.instr
   if (mapa) {
     const miembros = Array.from(mapa.querySelectorAll<HTMLElement>('li[data-instrumento]'));
     const filtros = Array.from(mapa.querySelectorAll<HTMLButtonElement>('button[data-filtro]'));
+    const nombres = Array.from(mapa.querySelectorAll<HTMLElement>('[data-grupo]'));
     let fijado: string | null = null;
     let sobrevolado: string | null = null;
 
@@ -227,6 +520,7 @@ const cuenta = (id: InstrumentoId) => filas.flat().filter((m) => grupoDe(m.instr
       const activo = sobrevolado ?? fijado;
       miembros.forEach((m) => m.toggleAttribute('data-dim', activo !== null && m.dataset.instrumento !== activo));
       filtros.forEach((f) => f.setAttribute('aria-pressed', String(f.dataset.filtro === fijado)));
+      nombres.forEach((n) => n.toggleAttribute('data-activo', n.dataset.grupo === activo));
     };
 
     const sobrevolar = (el: HTMLElement, id: string | undefined) => {

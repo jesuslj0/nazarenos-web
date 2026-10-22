@@ -39,29 +39,58 @@ export type InstrumentoId = keyof typeof instrumentosFormacion;
 const de = (instrumento: InstrumentoId, ...nombres: string[]): Integrante[] =>
   nombres.map((nombre) => ({ nombre, instrumento }));
 
-/** Formación actual (basada en src/docs/Formación Certamen 2026.pdf), de delante hacia atrás. */
-export const formacion: Integrante[][] = [
-  de('bombo', 'Luis A.', 'Samuel', 'Juan Antonio'),
-  de('tambor', 'Mani', 'Mani Jr.', 'Manuel', 'Ariadna', 'Álvaro', 'José Luis', 'Iván', 'Jesús Alc.'),
-  [...de('tambor', 'Prisci', 'María M.'), ...de('platillos', 'Felipe'), ...de('caja', 'Antonio', 'Pedro Jr.')],
-  [
-    ...de('corneta', 'Alberto', 'Jesús', 'Manuel A.'),
-    ...de('cornetaPlata', 'Rafa', 'Daniel', 'Sergio'),
-    ...de('corneta', 'Hugo', 'Miguel', 'Manuel'),
-  ],
-  [
-    ...de('tuba', 'Antonio'),
-    ...de('trombon', 'Iván', 'J. Carlos', 'Pablo'),
-    ...de('trombonPistones', 'Zaida', 'Abraham', 'Carmelo', 'Nacho'),
-  ],
-  [
-    ...de('cornetaPistones', 'Pedrín', 'Manolín', 'Alejo', 'Pedro L.'),
-    ...de('trompeta', 'Luismi', 'Maite', 'Carmen', 'Lucía', 'Ainoa', 'Adolfo'),
-  ],
-  [
-    ...de('fliscorno', 'Enrique', 'Elsa', 'Olga', 'Alvaro', 'Mª José', 'Rosa'),
-    ...de('trompeta', 'María', 'Vera', 'Marta', 'Nazaret', 'Ana'),
-  ],
-  de('trompeta', 'Marcos', 'Emmanuel', 'Carlos', 'Adrián', 'Juan Antonio', 'Alex', 'Marina C.', 'Evami', 'Marina A.'),
-  de('director', 'Jesús Ángel'),
+export interface Seccion {
+  nombre: string;
+  filas: Integrante[][];
+  /** Se muestra sobre un atril individual en lugar de una grada completa. */
+  atril?: boolean;
+}
+
+/** Formación actual (basada en src/docs/Formación Certamen 2026.pdf), por secciones y de delante hacia atrás. */
+export const formacion: Seccion[] = [
+  { nombre: 'Dirección', atril: true, filas: [de('director', 'Jesús Ángel')] },
+  {
+    nombre: 'Trompetas',
+    filas: [
+      de('trompeta', 'Marcos', 'Emmanuel', 'Carlos', 'Adrián', 'Juan Antonio', 'Alex', 'Marina C.', 'Evami', 'Marina A.'),
+      de('trompeta', 'Luismi', 'Maite', 'Carmen', 'Lucía', 'Ainoa', 'Adolfo', 'María', 'Vera', 'Marta', 'Nazaret', 'Ana'),
+    ],
+  },
+  {
+    nombre: 'Armonía',
+    filas: [
+      [
+        ...de('cornetaPistones', 'Pedrín', 'Manolín', 'Alejo', 'Pedro L.'),
+        ...de('fliscorno', 'Enrique', 'Elsa', 'Olga', 'Alvaro', 'Mª José', 'Rosa'),
+      ],
+    ],
+  },
+  {
+    nombre: 'Bajos',
+    filas: [
+      [
+        ...de('tuba', 'Antonio'),
+        ...de('trombon', 'Iván', 'J. Carlos', 'Pablo'),
+        ...de('trombonPistones', 'Zaida', 'Abraham', 'Carmelo', 'Nacho'),
+      ],
+    ],
+  },
+  {
+    nombre: 'Cornetas',
+    filas: [
+      [
+        ...de('corneta', 'Alberto', 'Jesús', 'Manuel A.'),
+        ...de('cornetaPlata', 'Rafa', 'Daniel', 'Sergio'),
+        ...de('corneta', 'Hugo', 'Miguel', 'Manuel'),
+      ],
+    ],
+  },
+  {
+    nombre: 'Percusión',
+    filas: [
+      [...de('tambor', 'Prisci', 'María M.'), ...de('platillos', 'Felipe'), ...de('caja', 'Antonio', 'Pedro Jr.')],
+      de('tambor', 'Mani', 'Mani Jr.', 'Manuel', 'Ariadna', 'Álvaro', 'José Luis', 'Iván', 'Jesús Alc.'),
+      de('bombo', 'Luis A.', 'Samuel', 'Juan Antonio'),
+    ],
+  },
 ];
